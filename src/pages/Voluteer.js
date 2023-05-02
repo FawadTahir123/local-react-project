@@ -8,40 +8,49 @@ import { LockOutlined, MailOutlined, RedEnvelopeOutlined, UserOutlined } from '@
 const Volunteer = () => {
     const nav = useNavigate();
     const [loading, setLoading] = useState(false);
-
+    const currentLoginUserId =  localStorage.getItem('id')
     const onFinish = async (values) => {
-        setLoading(true);
+        values.status = "pending"  //default value for request
+        
+        console.log(values);
+        const response = await fetch(`http://127.0.0.1:5000/api/request-blood/${currentLoginUserId}`,{
+            method:"POST",
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(values)
+        });
 
-        try {
-            // Add user to database
-            const response = await axios.post(`${BASE_URL}/user`, {
-                firstName: values.firstName,
-                lastName: values.lastName,
-                email: values.email,
-                password: values.password,
-                role: 'applicant',
-                applicationId: values.applicationID,
-            });
+        // setLoading(true);
 
-            if (response.data.error) {
-                setLoading(false);
-                message.error("Something went wrong: ", response.data.error);
-                setLoading(false)
-                nav('/user/signup')
-                return;
-            }
+        // try {
+        //     // Add user to database
+        //     const response = await axios.post(`${BASE_URL}/user`, {
+        //         firstName: values.firstName,
+        //         lastName: values.lastName,
+        //         email: values.email,
+        //         password: values.password,
+        //         role: 'applicant',
+        //         applicationId: values.applicationID,
+        //     });
 
-            setLoading(false);
-            nav('/');
-        } catch (error) {
-            setLoading(false);
-            message.error('Failed to create user');
-        }
+        //     if (response.data.error) {
+        //         setLoading(false);
+        //         message.error("Something went wrong: ", response.data.error);
+        //         setLoading(false)
+        //         nav('/user/signup')
+        //         return;
+        //     }
+
+        //     setLoading(false);
+        //     nav('/');
+        // } catch (error) {
+        //     setLoading(false);
+        //     message.error('Failed to create user');
+        // }
     };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
+    // const onFinishFailed = (errorInfo) => {
+    //     console.log('Failed:', errorInfo);
+    // };
 
     const divStyle = {
         margin: 'auto',
@@ -53,8 +62,13 @@ const Volunteer = () => {
     return (
         <div style={divStyle}>
             <Card
-                title="Volunteer"
+                title="Request"
                 style={{ backgroundColor: 'lightgray', width: '100%' }}
+                extra={
+                    <Button type="link" block>
+                        <Link to="/">Back</Link>
+                    </Button>
+                }
             >
                 <Spin spinning={loading}>
                     <Form
@@ -63,11 +77,11 @@ const Volunteer = () => {
                             remember: false,
                         }}
                         onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
+                        // onFinishFailed={onFinishFailed}
                         autoComplete="off"
                         layout="vertical"
                     >
-                        <Form.Item
+                        {/* <Form.Item
                             label="First Name"
                             name="firstName"
                             rules={[
@@ -78,9 +92,9 @@ const Volunteer = () => {
                             ]}
                         >
                             <Input prefix={<UserOutlined />} />
-                        </Form.Item>
+                        </Form.Item> */}
 
-                        <Form.Item
+                        {/* <Form.Item
                             label="Last Name"
                             name="lastName"
                             rules={[
@@ -91,9 +105,9 @@ const Volunteer = () => {
                             ]}
                         >
                             <Input prefix={<UserOutlined />} />
-                        </Form.Item>
+                        </Form.Item> */}
 
-                        <Form.Item
+                        {/* <Form.Item
                             label="CNIC"
                             name="cnic"
                             rules={[
@@ -104,9 +118,9 @@ const Volunteer = () => {
                             ]}
                         >
                             <Input type='number' prefix={<RedEnvelopeOutlined />} />
-                        </Form.Item>
+                        </Form.Item> */}
 
-                        <Form.Item
+                        {/* <Form.Item
                             label="Phone No."
                             name="phoneNo"
                             rules={[
@@ -117,9 +131,9 @@ const Volunteer = () => {
                             ]}
                         >
                             <Input type='number' prefix={<RedEnvelopeOutlined />} />
-                        </Form.Item>
+                        </Form.Item> */}
 
-                        <Form.Item label="Preference" name="preference" rules={[{
+                        {/* <Form.Item label="Preference" name="preference" rules={[{
                                 required: true, message: "Preference is required"
                             }]}>
                                 <Radio.Group >
@@ -128,9 +142,9 @@ const Volunteer = () => {
                                         <Radio value={2}>Adopt a Patient</Radio>
                                     </Space>
                                 </Radio.Group>
-                        </Form.Item>
+                        </Form.Item> */}
                         
-                        <Form.Item label="Blood Group" name="blood"
+                        <Form.Item label="Blood Group" name="blood_group"
                             rules={[{
                                 required: true, message: "Blood Group is required"
                             }]}
@@ -149,29 +163,31 @@ const Volunteer = () => {
                         </Form.Item>
 
                         <Form.Item
-                            label="Email"
-                            name="email"
+                            label="Units Required"
+                            name="units"
+                            
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please enter your email',
+                                    message: 'Please enter units Required',
                                 },
                             ]}
+                           
                         >
-                            <Input prefix={<MailOutlined />} />
+                            <Input type="number" prefix={<UserOutlined />} />
                         </Form.Item>
 
                         <Form.Item
-                            label="Password"
-                            name="password"
+                            label="Date"
+                            name="date"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please enter your password',
+                                    message: 'Please enter reqired Date',
                                 },
                             ]}
                         >
-                            <Input.Password prefix={<LockOutlined />} />
+                            <Input type='date' prefix={<LockOutlined />} />
                         </Form.Item>
 
                         <Form.Item>

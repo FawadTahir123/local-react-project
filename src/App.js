@@ -1,4 +1,5 @@
 import React from 'react';
+import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter as Router, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -7,6 +8,10 @@ import Layout from './pages/Layout';
 import UserLayout from './pages/UserLayout';
 import {message} from "antd";
 import Volunteer from './pages/Voluteer';
+import Dashboard from "./pages/Dashboard";
+import DashboardRequests from "./pages/DashboardRequests"
+import DashboardEvents from "./pages/DashboardEvents"
+
 
 
 
@@ -60,6 +65,18 @@ const App = () => {
                     <Route element={<PrivateRoutes role="user" />}>
                         <Route path="/dashboard/user/*" element={<UserLayout />} />
                     </Route> */}
+                     <Route
+            path="/admin/user"
+            element={<Dashboard/>}
+          />
+           <Route
+            path="/admin/requests"
+            element={<DashboardRequests/>}
+          />
+            <Route
+            path="/admin/events"
+            element={<DashboardEvents/>}
+          />
                     <Route exact path="/login" element={<Login />}/>
                     <Route exact path="/sign-up" element={<Signup />}/>
                     <Route exact path="/volunteer" element={<Volunteer />}/>

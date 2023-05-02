@@ -24,7 +24,7 @@ const Signup = () => {
         password: ""
     })
 
-
+    const navigate = useNavigate()
     // const handleInput = (e) => {
     //     e.persist();
     //     setUserInput({...userInput,[e.target.name]: e.target.value});
@@ -40,18 +40,36 @@ const Signup = () => {
       };
 
       const onFinish = async(values) => {
-        console.log('Success:', values);
+        // console.log('Success:', values);
         var mailformat = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
         var passw = /^(?=.*[a-z]).{8,15}$/;
 
         if(values.email.match(mailformat)){
             if(values.password.match(passw)){
-                // console.log('Success:', values);
-                // const response = await fetch('https://test-wrangler.listing.workers.dev/auth/register',{
-                //     method:"POST",
-                //     headers: {'Content-Type':'application/json'},
-                //     body: JSON.stringify(values)
-                // })
+                const response = await fetch('http://127.0.0.1:5000/auth/register',{
+                    method:"POST",
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(values)
+                })
+
+                const data = await response.json();
+                if(data.status===0)
+                {
+                    // setMessageAlert("Email Already Registered")
+                    // setStatusAlert("error")
+                    // setShowAlert(true)
+                    console.log("Email Already Registered");
+                }
+                else if(data.status===1)
+                {
+                    // setMessageAlert("Error in Creating User")
+                    // setStatusAlert("error")
+                    // setShowAlert(true)
+                    console.log("Error in Creating User");
+                }
+                else {
+                    navigate("/login"); 
+                }
             }else{
                 alert('Wrong password Type! Please use characters between 8 and 15 and alteast one numeric digit and special character.')
             }

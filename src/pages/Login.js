@@ -6,46 +6,80 @@ import { message, Spin, Button, Checkbox, Form, Input, Card, } from 'antd'
 import {LockOutlined, LoginOutlined, UserOutlined} from "@ant-design/icons";
 
 const Login = () => {
-    const nav = useNavigate();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     const onFinish = async (values) => {
-        setLoading(true);
-        if (values.email === 'admin@admin.com' && values.password === 'admin') {
-            message.success('Login Successful');
-            setLoading(false);
-            nav('/dashboard/admin/home');
-            setLoading(false)
-            return;
-        } else if (values.email === 'user@user.com' && values.password === 'user') {
-            message.success('Login Successful');
-            setLoading(false);
-            nav('/dashboard/user/home');
-            setLoading(false)
-            return;
-        }
+        // setLoading(true);
+        // console.log(values, "login-value");
 
 
-        try {
-            const response = await axios.post(`${BASE_URL}/user/login`, {
-                email: values.email,
-                password: values.password,
-            });
-            message.success('Login Successful');
-            setLoading(false);
-            const { token, user } = response.data;
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user));
-            nav('/dashboard/user/home');
-        } catch (error) {
-            setLoading(false);
-            message.error("Something went wrong");
-        }
+        const response = await fetch('http://127.0.0.1:5000/auth/login',{
+            method:"POST",
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(values)
+        });
+
+        const data = await response.json();
+            if(data.status===0)
+            {
+                // setMessageAlert(data.msg)
+                // setStatusAlert("error")
+                // setShowAlert(true)
+                console.log(data.msg);
+            }
+            else if(data.status===1){
+                // setMessageAlert(data.msg)
+                // setStatusAlert("error")
+                // setShowAlert(true)
+                console.log(data.msg);
+            }
+            else {
+                localStorage.setItem("firstname",data.data[0].first_name);
+                localStorage.setItem("lastname", data.data[0].last_name);
+                localStorage.setItem("user_role", data.data[0].user_role);
+                localStorage.setItem("id", data.data[0].id);
+                console.log(data.msg);
+                // setMessageAlert(data.msg);
+                // setStatusAlert("error");
+                // setShowAlert(true);
+                navigate('/');
+            }
+        // if (values.email === 'admin@admin.com' && values.password === 'admin') {
+        //     message.success('Login Successful');
+        //     setLoading(false);
+        //     nav('/dashboard/admin/home');
+        //     setLoading(false)
+        //     return;
+        // } else if (values.email === 'user@user.com' && values.password === 'user') {
+        //     message.success('Login Successful');
+        //     setLoading(false);
+        //     nav('/dashboard/user/home');
+        //     setLoading(false)
+        //     return;
+        // }
+
+
+    //     try {
+    //         const response = await axios.post(`${BASE_URL}/user/login`, {
+    //             email: values.email,
+    //             password: values.password,
+    //         });
+    //         message.success('Login Successful');
+    //         setLoading(false);
+    //         const { token, user } = response.data;
+    //         localStorage.setItem('token', token);
+    //         localStorage.setItem('user', JSON.stringify(user));
+    //         nav('/dashboard/user/home');
+    //     } catch (error) {
+    //         setLoading(false);
+    //         message.error("Something went wrong");
+    //     }
     };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
+    // const onFinishFailed = (errorInfo) => {
+    //     console.log('Failed:', errorInfo);
+    // };
 
     const divStyle = {
         margin: 'auto',
@@ -73,7 +107,7 @@ const Login = () => {
                         }}
                         layout="vertical"
                         onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
+                        // onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
                         <Form.Item
