@@ -6,59 +6,56 @@ import pen from "../images/pen.png";
 import Modal from "react-bootstrap/Modal";
 import { Label } from "reactstrap";
 import { Alert } from "antd";
-// import DashboardListingCards from "./DasboardListingCards";\
 import DashboardRequestsCards from "./DashboardRequestsCards";
-// import Places from "../pages/places";
-// import DashboardOverViewContent from "./DashBoardOverViewContent";
 import RequestsTable from "./RequestsTable";
 
 
 export const RequestsGlobals = createContext();
 function DashboardRequestsBody() {
   // const navigate = Navigate();
-  // const [modalShow, setModalShow] = useState(false);
-  // const [showAlert, setShowAlert] = useState(false);
-  // const [users, setUsers] = useState([]);
-  // const [showStatus, setStatusAlert] = useState("");
-  // const [showMessage, setMessageAlert] = useState("");
-  // const [categories, setCategories] = useState([]);
-  // const [selectedCategory, setSelectedCategory] = useState("");
-  // const [selectedUser, setSelectedUser] = useState("");
-  // const [flag, setFlag] = useState(false);
-  const [alllisting, setAllListing] = useState([]);
+  const [modalShow, setModalShow] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [showStatus, setStatusAlert] = useState("");
+  const [showMessage, setMessageAlert] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedUser, setSelectedUser] = useState("");
+  const [flag, setFlag] = useState(false);
+  const [allRequest, setAllRequest] = useState([]);
   const [loader, setLoader] = useState(false);
   const [totalPatients, setTotalPatients] = React.useState(0);
   const [totalDonors, setTotalDonors] = React.useState(0);
   const [totalRequests, setTotalRequests] = React.useState(0);
   const [totalEvents, setTotalEvents] = React.useState(0);
-  const [initialpage, setInitialpage] = useState(0);
+  // const [initialpage, setInitialpage] = useState(0);
   const [showTableLoader, setTableloader] = useState(false);
   const [filterState, setFilterState] = useState(false);
   const [services, setServices] = useState([]);
 
-  const [listing, setListing] = useState({
-    user_id: "",
-    location: "",
-    category_id: "",
-    menu_type: "",
-    services: "",
-    rating: "",
-    rating_count: "",
-    image_link: "",
-    video_link: "",
-    url: "",
-    start_time: "",
-    end_time: "",
-    max_price: "",
-    min_price: "",
-    phn_number: "",
-    description: "",
-    name: "",
-    address: "",
-  });
+  // const [listing, setListing] = useState({
+  //   user_id: "",
+  //   location: "",
+  //   category_id: "",
+  //   menu_type: "",
+  //   services: "",
+  //   rating: "",
+  //   rating_count: "",
+  //   image_link: "",
+  //   video_link: "",
+  //   url: "",
+  //   start_time: "",
+  //   end_time: "",
+  //   max_price: "",
+  //   min_price: "",
+  //   phn_number: "",
+  //   description: "",
+  //   name: "",
+  //   address: "",
+  // });
 
   useEffect(() => {
-    // data();
+    data();
     CardsData();
     // setInitialpage(0);
   }, []);
@@ -85,39 +82,40 @@ function DashboardRequestsBody() {
     setTableloader(true);
     try {
       const res = await fetch(
-        `https://test-wrangler.listing.workers.dev/api/get-all-listing?page=1&limit=10`,
+        `http://127.0.0.1:5000/api/get-all-request?page=1&limit=10`,
         {
           method: "GET",
         }
       );
       const result = await res.json();
+      console.log(result);
       setTableloader(false);
-      setAllListing(result);
-      setServices(result.services);
-      // setFlag(true);
+      setAllRequest(result);
+      // setServices(result.services);
+      setFlag(true);
     } catch (err) {
       console.log(err.message);
     }
   };
 
-  const data1 = async (page, limit) => {
-    setTableloader(true);
-    try {
-      const res = await fetch(
-        `https://test-wrangler.listing.workers.dev/api/get-all-listing?page=${page}&limit=${limit}`,
-        {
-          method: "GET",
-        }
-      );
-      const result = await res.json();
-      setTableloader(false);
-      setAllListing(result);
-      setServices(result.services);
-      // console.log(result.count)
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
+  // const data1 = async (page, limit) => {
+  //   setTableloader(true);
+  //   try {
+  //     const res = await fetch(
+  //       `https://test-wrangler.listing.workers.dev/api/get-all-listing?page=${page}&limit=${limit}`,
+  //       {
+  //         method: "GET",
+  //       }
+  //     );
+  //     const result = await res.json();
+  //     setTableloader(false);
+  //     setAllListing(result);
+  //     setServices(result.services);
+  //     // console.log(result.count)
+  //   } catch (err) {
+  //     console.log(err.message);
+  //   }
+  // };
 
   // const getCategories = async (e) => {
   //   try {
@@ -275,21 +273,21 @@ function DashboardRequestsBody() {
   return (
     <RequestsGlobals.Provider
       value={{
-        // data: data,
+        data: data,
         // data1: data1,
         CardsData: CardsData,
         // setInitialpage: setInitialpage,
-        // setAllListing: setAllListing,
-        // setTableloader: setTableloader,
+        setAllRequest: setAllRequest,
+        setTableloader: setTableloader,
         // initialpage: initialpage,
-        // alllisting: alllisting,
+        allRequest: allRequest,
         Cardsloader: loader,
         totalPatients: totalPatients,
         totalDonors:totalDonors,
         totalRequests: totalRequests,
         totalEvents:totalEvents,
         
-        // showTableLoader: showTableLoader,
+        showTableLoader: showTableLoader,
         // setFilterState: setFilterState,
         // filterState: filterState,
         // services: services,
@@ -307,10 +305,7 @@ function DashboardRequestsBody() {
         </div>
 
         <div className="over-tbl-content">
-          {/* <DashboardOverViewContent /> */}
           <DashboardRequestsCards/>
-          {/* <DashboardListingCards /> */}
-          {/* <ListingTable /> */}
           <RequestsTable />
         </div>
       </div>

@@ -761,25 +761,24 @@ export default function UserTable() {
               <div className="mb-3">
                 <Label className="edit-input-label">Role</Label>
                 <input
-                      type="password"
-                      name="password"
-                      value={viewdata.password}
+                      type="text"
+                      name="role"
+                      value={viewdata.user_role}
                       className="edit-form-control"
                       placeholder="Password"
                     />
               </div>
               {
-                userRole == '3' ? 
+                viewdata.user_role == '3' ? 
                 <div className="mb-3">
                 <Label className="edit-input-label">Prefrence</Label>
-                <select
-                  className="edit-form-control padding-rigth-15"
-                  value={userStatus}
-                >
-                  <option>Select</option>
-                  <option value={"adopt_a_child"}>Adopt a Child</option>
-                  <option value={"one_time"}>One Time</option>
-                </select>
+                <input
+                      type="text"
+                      name="role"
+                      value={viewdata.status}
+                      className="edit-form-control"
+                      placeholder="Password"
+                    />
               </div> : ""
 
               }
