@@ -7,7 +7,7 @@ import Modal from "react-bootstrap/Modal";
 import { Label } from "reactstrap";
 import { Alert } from "antd";
 import { RequestsGlobals } from "./DashboardRequestBody";
-// import Pagination from "./Paginaton";
+import Pagination from "./Paginaton";
 import Button from "@mui/material/Button";
 import Search from "./GuiFilter";
 import { CircularProgress } from "@mui/material";
@@ -16,20 +16,20 @@ import { display } from "@mui/system";
 
 function RequestsTable() {
   
-  // const [showAlert, setShowAlert] = useState(false);
-  // const [deleteModalShow, setDeleteModalShow] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [deleteModalShow, setDeleteModalShow] = useState(false);
   const {
     data,
     allRequest,
     CardsData,
-    // data1,
-    // initialpage,
-    // setInitialpage,
+    data1,
+    initialpage,
+    setInitialpage,
     setAllRequest,
     showTableLoader,
     setTableloader,
-    // filterState,
-    // setFilterState,
+    filterState,
+    setFilterState,
     // services,
   } = useContext(RequestsGlobals);
   // const {location, setLocation, selectedLocation, setSelectedLocation, editListingId, setEditListingId, setServices} = useContext(MapGlobals);
@@ -73,6 +73,47 @@ function RequestsTable() {
     setModalShow(true);
   };
 
+
+  const UpdateRequest = async (e) => {
+    // e.preventDefault();
+    // if (editRequest.first_name === "") {
+    //   setMessageAlert("Please enter first name");
+    //   setStatusAlert("error");
+    //   setShowAlert(true);
+    // } else if (editRequest.last_name === "") {
+    //   setMessageAlert("Please enter last name");
+    //   setStatusAlert("error");
+    //   setShowAlert(true);
+    // } else {
+    //   try {
+    //     const res = await fetch(
+    //       `http://127.0.0.1:5000/api/edit-user/${editUser.id}`,
+    //       {
+    //         method: "PUT",
+    //         headers: { "Content-Type": "application/json" },
+    //         body: JSON.stringify({
+    //           first_name: editRequest.first_name,
+    //           last_name: editRequest.last_name,
+              
+    //         }),
+    //       }
+    //     );
+    //     console.log(editUser.firstname,"first  ", editUser.last_name, "last  ", userRole, "Role", bloodgroup, "blood");
+    //     data();
+    //     const result = await res.json();
+    //     console.log(result);
+    //     setMessageAlert("User updated successfully");
+    //     setStatusAlert("success");
+    //     setShowAlert(true);
+    //     setModalShow(false);
+    //     setShowAlert(false);
+    //     setUserRole("");
+    //   } catch (e) {
+    //     console.log("error", e);
+    //   }
+    // }
+  };
+
   const handleInput = (e) => {
     e.preventDefault();
     let copyEditRequest = editRequest;
@@ -112,23 +153,23 @@ function RequestsTable() {
 //   );
 //   const tableData = filterdData ?? alllisting;
 
-  // const handlePageClick = (data) => {
-  //   if (!filterState) {
-  //     let currentPage = data.selected + 1;
-  //     const commentsFormServer = data1(currentPage, limit);
-  //     setInitialpage(data.selected);
-  //     setItems(commentsFormServer);
-  //     setisChecked([]);
-  //   } else {
-  //     let currentPage = data.selected + 1;
-  //     setInitialpage(data.selected);
-  //     const commentsFormServer = childCompRef.current.searchByPage(
-  //       `https://test-wrangler.listing.workers.dev/api/search-listing?page=${currentPage}&limit=10`
-  //     );
-  //     setItems(commentsFormServer);
-  //     setisChecked([]);
-  //   }
-  // };
+  const handlePageClick = (data) => {
+    if (!filterState) {
+      let currentPage = data.selected + 1;
+      const commentsFormServer = data1(currentPage, limit);
+      setInitialpage(data.selected);
+      setItems(commentsFormServer);
+      setisChecked([]);
+    } else {
+      let currentPage = data.selected + 1;
+      setInitialpage(data.selected);
+      const commentsFormServer = childCompRef.current.searchByPage(
+        `http://127.0.0.1:5000/api/search-listing?page=${currentPage}&limit=10`
+      );
+      setItems(commentsFormServer);
+      setisChecked([]);
+    }
+  };
 
   const handelCheckbox = (e) => {
     const { value, checked } = e.target;
@@ -158,9 +199,9 @@ function RequestsTable() {
     CardsData();
     setisChecked([]);
   };
-//   setTimeout(() => {
-//     setShowDeleteAlert(false);
-//   }, 5000);
+  setTimeout(() => {
+    setShowDeleteAlert(false);
+  }, 5000);
 
   // useEffect(() =>{
   //   console.log("services?.results", services)
@@ -180,22 +221,22 @@ function RequestsTable() {
             Delete
           </Button>
         }
-        {/* {showDeleteAlert ? (
+        {showDeleteAlert ? (
           <Alert message={showDeleteMessage} type="error" />
         ) : (
           ""
-        )} */}
+        )}
 
-        {/* <Search
-          placeholder={"Search listing by name"}
-          url={`https://test-wrangler.listing.workers.dev/api/search-listing?page=1&limit=10`}
-          state={setAllListing}
+        <Search
+          placeholder={"Search"}
+          url={`http://127.0.0.1:5000/api/search-request?page=1&limit=10`}
+          state={setAllRequest}
           setLoader={setTableloader}
           setInitialpage={setInitialpage}
           data={data}
           setFilterState={setFilterState}
           ref={childCompRef}
-        /> */}
+        />
       </div>
       <div className="user-table-wrapper">
         <table
@@ -393,7 +434,6 @@ function RequestsTable() {
                   </div>
                 </div>
               </div>
-              {console.log(requestStatus)}
               <div className="row">
                 <div className="col-md-6">
                   <div className="mb-3">
@@ -539,7 +579,7 @@ function RequestsTable() {
                   </button>
                 </div>
                 <div className="col-md-6">
-                  {/* <button onClick={UpdateUser}>Save</button> */}
+                  <button onClick={UpdateRequest}>Save</button>
                 </div>
               </div>
             </form>
@@ -597,12 +637,12 @@ function RequestsTable() {
           </Modal.Body>
         </Modal> */}
       </div>
-      {/* <Pagination
+      <Pagination
         count={count}
         limit={limit}
         handlePageClick={handlePageClick}
         initialpage={initialpage}
-      /> */}
+      />
     </>
   );
 }

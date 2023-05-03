@@ -28,7 +28,7 @@ function DashboardRequestsBody() {
   const [totalDonors, setTotalDonors] = React.useState(0);
   const [totalRequests, setTotalRequests] = React.useState(0);
   const [totalEvents, setTotalEvents] = React.useState(0);
-  // const [initialpage, setInitialpage] = useState(0);
+  const [initialpage, setInitialpage] = useState(0);
   const [showTableLoader, setTableloader] = useState(false);
   const [filterState, setFilterState] = useState(false);
   const [services, setServices] = useState([]);
@@ -57,7 +57,7 @@ function DashboardRequestsBody() {
   useEffect(() => {
     data();
     CardsData();
-    // setInitialpage(0);
+    setInitialpage(0);
   }, []);
 
   const CardsData = async () => {
@@ -98,24 +98,22 @@ function DashboardRequestsBody() {
     }
   };
 
-  // const data1 = async (page, limit) => {
-  //   setTableloader(true);
-  //   try {
-  //     const res = await fetch(
-  //       `https://test-wrangler.listing.workers.dev/api/get-all-listing?page=${page}&limit=${limit}`,
-  //       {
-  //         method: "GET",
-  //       }
-  //     );
-  //     const result = await res.json();
-  //     setTableloader(false);
-  //     setAllListing(result);
-  //     setServices(result.services);
-  //     // console.log(result.count)
-  //   } catch (err) {
-  //     console.log(err.message);
-  //   }
-  // };
+  const data1 = async (page, limit) => {
+    setTableloader(true);
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/api/get-all-request?page=${page}&limit=${limit}`,
+        {
+          method: "GET",
+        }
+      );
+      const result = await res.json();
+      setTableloader(false);
+      setAllRequest(result);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   // const getCategories = async (e) => {
   //   try {
@@ -276,10 +274,10 @@ function DashboardRequestsBody() {
         data: data,
         // data1: data1,
         CardsData: CardsData,
-        // setInitialpage: setInitialpage,
+        setInitialpage: setInitialpage,
         setAllRequest: setAllRequest,
         setTableloader: setTableloader,
-        // initialpage: initialpage,
+        initialpage: initialpage,
         allRequest: allRequest,
         Cardsloader: loader,
         totalPatients: totalPatients,
@@ -288,8 +286,8 @@ function DashboardRequestsBody() {
         totalEvents:totalEvents,
         
         showTableLoader: showTableLoader,
-        // setFilterState: setFilterState,
-        // filterState: filterState,
+        setFilterState: setFilterState,
+        filterState: filterState,
         // services: services,
       }}
     >
@@ -297,10 +295,10 @@ function DashboardRequestsBody() {
         <DashboardHeader title={"Requests"} />
         <div className="dash-user-content">
           <div className="d-flex align-items-center total-over-add">
-            <Link to="/admin/listingForm" className="ms-auto add-user-btn">
+            {/* <Link to="/admin/listingForm" className="ms-auto add-user-btn">
               <img src={add} alt="..." />
               Add Events
-            </Link>
+            </Link> */}
           </div>
         </div>
 

@@ -216,10 +216,10 @@ export default function DashboardUserBody() {
           <div className="dash-user-content">
             <div className="d-flex align-items-center total-over-add">
               {/*  */}
-              <Link onClick={AddUser} className="ms-auto add-user-btn">
+              {/* <Link onClick={AddUser} className="ms-auto add-user-btn">
                 <img src={add} alt="..." />
                 Add User
-              </Link>
+              </Link> */}
             </div>
           </div>
 

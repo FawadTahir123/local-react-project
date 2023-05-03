@@ -156,16 +156,16 @@ function EventsTable() {
           ""
         )} */}
 
-        <Search
+        {/* <Search
           placeholder={"Search listing by name"}
-        //   url={`https://test-wrangler.listing.workers.dev/api/search-listing?page=1&limit=10`}
-        //   state={setAllListing}
-        //   setLoader={setTableloader}
-        //   setInitialpage={setInitialpage}
-        //   data={data}
-        //   setFilterState={setFilterState}
-        //   ref={childCompRef}
-        />
+          url={`https://test-wrangler.listing.workers.dev/api/search-listing?page=1&limit=10`}
+          state={setAllListing}
+          setLoader={setTableloader}
+          setInitialpage={setInitialpage}
+          data={data}
+          setFilterState={setFilterState}
+          ref={childCompRef}
+        /> */}
       </div>
       <div className="user-table-wrapper">
         <table
