@@ -48,20 +48,6 @@ function Navbar() {
             <i className={click ? "fas fa-times" : "fas fa-bars"} />
           </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
-            {/* <li className="nav-item">
-              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                Home
-              </Link>
-            </li> */}
-            {/* <li className="nav-item">
-              <Link
-                to="/services"
-                className="nav-links"
-                onClick={closeMobileMenu}
-              >
-                Contact Us
-              </Link>
-            </li> */}
             {!currentUserLoginId ? (
               <>
                 <Link to="/sign-up" className="btn-mobile pt-2">
@@ -144,36 +130,17 @@ function Navbar() {
                     Check your Event
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link
+                    className="nav-links"
+                    onClick={logOut}
+                  >
+                    LOG OUT
+                  </Link>
+                </li>
               </>
             )}
-            {/* <li className='nav-item'>
-              <Link
-                to='/volunteer'
-                className='nav-links'
-                onClick={closeMobileMenu}
-              >
-                Request for blood
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
-                to='/volunteer'
-                className='nav-links'
-                onClick={closeMobileMenu}
-              >
-               Check your Event
-              </Link>
-            </li> */}
-
-            {/* <li>
-              <Link
-                to='/sign-up'
-                className='nav-links-mobile'
-                onClick={closeMobileMenu}
-              >
-                Sign Up
-              </Link>
-            </li> */}
+            
           </ul>
         </div>
       </nav>

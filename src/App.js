@@ -75,11 +75,11 @@ const App = () => {
           />
            <Route
             path="/admin/requests"
-            element={<Protected Component={DashboardRequests} />}
+            element={<Protected Component={DashboardRequests} url={window.location.href}/>}
           />
             <Route
             path="/admin/events"
-            element={<Protected Component={DashboardEvents} /> }
+            element={<Protected Component={DashboardEvents} url={window.location.href}/> }
           />
                     <Route exact path="/login" element={<Login url={url}/>}/>
                     <Route exact path="/sign-up" element={<Signup />}/>

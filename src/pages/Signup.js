@@ -4,26 +4,16 @@ import { BASE_URL } from '../utils';
 import { Select, message, Spin, Button, Checkbox, Form, Radio, Input, Card, Space } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { LockOutlined, MailOutlined, RedEnvelopeOutlined, UserOutlined ,HomeOutlined } from '@ant-design/icons';
+import { Alert } from 'antd';
 
 const Signup = () => {
     const nav = useNavigate();
     const [loading, setLoading] = useState(false);
     const [donorState, setDonorState] = useState(1)
+    const [showAlert, setShowAlert]= useState(false);
+    const [showStatus, setStatusAlert]= useState('');
+    const [showMessage, setMessageAlert]= useState('');
     const [donorStatus, setDonorStatus] = useState('')
-    const [userInput, setUserInput] = useState({
-        first_name: "",
-        last_name: "",
-        age:"",
-        cnic:"",
-        phone_no:"",
-        user_role:"",
-        status:"",
-        blood_group:"",
-        gender:"",
-        email: "", 
-        password: ""
-    })
-
     const navigate = useNavigate()
     // const handleInput = (e) => {
     //     e.persist();
@@ -51,20 +41,20 @@ const Signup = () => {
                     headers: {'Content-Type':'application/json'},
                     body: JSON.stringify(values)
                 })
-
+    
                 const data = await response.json();
                 if(data.status===0)
                 {
-                    // setMessageAlert("Email Already Registered")
-                    // setStatusAlert("error")
-                    // setShowAlert(true)
-                    console.log("Email Already Registered");
+                    setMessageAlert("Email Already Registered")
+                    setStatusAlert("error")
+                    setShowAlert(true)
+                  
                 }
                 else if(data.status===1)
                 {
-                    // setMessageAlert("Error in Creating User")
-                    // setStatusAlert("error")
-                    // setShowAlert(true)
+                    setMessageAlert("Error in Creating User")
+                    setStatusAlert("error")
+                    setShowAlert(true)
                     console.log("Error in Creating User");
                 }
                 else {
@@ -75,7 +65,7 @@ const Signup = () => {
             }
         }else{
             alert("You have entered an invalid email address!");
-        }
+            }
       };
 
     const divStyle = {
@@ -159,19 +149,28 @@ const Signup = () => {
                         >
                             <Input prefix={<HomeOutlined />} />
                         </Form.Item>
-
-                        <Form.Item
+                            <Form.Item
+                        
                             label="CNIC"
                             name="cnic"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please enter your CNIC without dashes',
+                                    message: 'Please enter your CNIC without dashes', 
                                 },
+                                ({getFieldValue}) => ({
+                                    validator(_, value) {
+                                        if (getFieldValue('cnic').length !== 13) {
+                                            return Promise.reject("Invalid CNIC");
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                }),
                             ]}
                         >
                             <Input type='text' prefix={<RedEnvelopeOutlined />} />
                         </Form.Item>
+                        
 
                         <Form.Item
                             label="Phone No."
@@ -181,6 +180,14 @@ const Signup = () => {
                                     required: true,
                                     message: 'Please enter your phone without dashes',
                                 },
+                                ({getFieldValue}) => ({
+                                    validator(_, value) {
+                                        if (getFieldValue('phoneNo').length !== 11) {
+                                            return Promise.reject("Invalid Phone No.");
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                }),
                             ]}
                         >
                             <Input type='number' prefix={<RedEnvelopeOutlined />} />
@@ -271,6 +278,8 @@ const Signup = () => {
                         >
                             <Input.Password prefix={<LockOutlined />} />
                         </Form.Item>
+                {showAlert? <Alert message={showMessage} type={showStatus} />: <div></div>}
+
 
                         <Form.Item>
                             <Button type="primary" htmlType="submit" className="MainButtons" block>

@@ -4,12 +4,17 @@ import { BASE_URL } from '../utils'
 import { Link, useNavigate } from 'react-router-dom'
 import { message, Spin, Button, Checkbox, Form, Input, Card, } from 'antd'
 import {LockOutlined, LoginOutlined, UserOutlined} from "@ant-design/icons";
+import { Alert } from 'antd';
+
 
 const Login = ({url}) => {
+
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    // const [previousUrl, setPreviousUrl] = useState("")
-    console.log(url);
+    const [showAlert, setShowAlert]= useState(false);
+    const [showStatus, setStatusAlert]= useState('');
+    const [showMessage, setMessageAlert]= useState('');
+
 
     const onFinish = async (values) => {
         // setLoading(true);
@@ -25,15 +30,15 @@ const Login = ({url}) => {
         const data = await response.json();
             if(data.status===0)
             {
-                // setMessageAlert(data.msg)
-                // setStatusAlert("error")
-                // setShowAlert(true)
+                setMessageAlert(data.msg)
+                setStatusAlert("error")
+                setShowAlert(true)
                 console.log(data.msg);
             }
             else if(data.status===1){
-                // setMessageAlert(data.msg)
-                // setStatusAlert("error")
-                // setShowAlert(true)
+                setMessageAlert(data.msg)
+                setStatusAlert("error")
+                setShowAlert(true)
                 console.log(data.msg);
             }
             else {
@@ -43,46 +48,20 @@ const Login = ({url}) => {
                 localStorage.setItem("id", data.data[0].id);
                 console.log(data.msg);
                 if(data.data[0].user_role == "1"){
+                    setMessageAlert(data.msg);
+                    setStatusAlert("error");
+                    setShowAlert(true);
                     navigate(url)
                 }else{
 
+                    setMessageAlert(data.msg);
+                    setStatusAlert("error");
+                    setShowAlert(true);
                     navigate('/');
                 }
 
-                // setMessageAlert(data.msg);
-                // setStatusAlert("error");
-                // setShowAlert(true);
+               
             }
-        // if (values.email === 'admin@admin.com' && values.password === 'admin') {
-        //     message.success('Login Successful');
-        //     setLoading(false);
-        //     nav('/dashboard/admin/home');
-        //     setLoading(false)
-        //     return;
-        // } else if (values.email === 'user@user.com' && values.password === 'user') {
-        //     message.success('Login Successful');
-        //     setLoading(false);
-        //     nav('/dashboard/user/home');
-        //     setLoading(false)
-        //     return;
-        // }
-
-
-    //     try {
-    //         const response = await axios.post(`${BASE_URL}/user/login`, {
-    //             email: values.email,
-    //             password: values.password,
-    //         });
-    //         message.success('Login Successful');
-    //         setLoading(false);
-    //         const { token, user } = response.data;
-    //         localStorage.setItem('token', token);
-    //         localStorage.setItem('user', JSON.stringify(user));
-    //         nav('/dashboard/user/home');
-    //     } catch (error) {
-    //         setLoading(false);
-    //         message.error("Something went wrong");
-    //     }
     };
 
     // const onFinishFailed = (errorInfo) => {
@@ -150,6 +129,8 @@ const Login = ({url}) => {
                                 span: 16,
                             }}
                         >
+                            {showAlert? <Alert message={showMessage} type={showStatus} />: <div></div>}
+
                             <Button style={{marginTop: "15px"}} type="primary" htmlType="submit" block icon={<LoginOutlined/>}>
                                 Log In
                             </Button>
