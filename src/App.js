@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "bootstrap/dist/css/bootstrap.css";
-import { BrowserRouter as Router, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -11,12 +11,16 @@ import Volunteer from './pages/Voluteer';
 import Dashboard from "./pages/Dashboard";
 import DashboardRequests from "./pages/DashboardRequests"
 import DashboardEvents from "./pages/DashboardEvents"
-
-
-
+import Protected from "../src/components/Protected";
 
 const App = () => {
 
+    // const [previousUrl,setPreviousUrl] = useState("");
+    const url  = window.location.pathname
+    console.log(url);
+
+// const location = useLocation(); // React Hook
+// console.log(location.pathname);
     const PrivateRoutes = (role) => {
         const user = localStorage.getItem('user')
         const status = user ? JSON.parse(user)?.status : false
@@ -65,19 +69,19 @@ const App = () => {
                     <Route element={<PrivateRoutes role="user" />}>
                         <Route path="/dashboard/user/*" element={<UserLayout />} />
                     </Route> */}
-                     <Route
+            <Route
             path="/admin/user"
-            element={<Dashboard/>}
+            element={<Protected Component={Dashboard} url={window.location.href} />}
           />
            <Route
             path="/admin/requests"
-            element={<DashboardRequests/>}
+            element={<Protected Component={DashboardRequests} />}
           />
             <Route
             path="/admin/events"
-            element={<DashboardEvents/>}
+            element={<Protected Component={DashboardEvents} /> }
           />
-                    <Route exact path="/login" element={<Login />}/>
+                    <Route exact path="/login" element={<Login url={url}/>}/>
                     <Route exact path="/sign-up" element={<Signup />}/>
                     <Route exact path="/volunteer" element={<Volunteer />}/>
                     {/*<Route exact path="/forgot-password" element={<ForgotPassword />}/>*/}
