@@ -73,7 +73,7 @@ function Navbar() {
                 </li>
                 <li className="nav-item">
                   <Link
-                    to="/volunteer"
+                    to="/check-event"
                     className="nav-links"
                     onClick={closeMobileMenu}
                   >
@@ -82,6 +82,7 @@ function Navbar() {
                 </li>
                 <li className="nav-item">
                   <Link
+                  to="/"
                     className="nav-links"
                     onClick={logOut}
                   >
@@ -94,15 +95,25 @@ function Navbar() {
                 {" "}
                 <li className="nav-item">
                   <Link
-                    to="/volunteer"
+                    to="/availability"
                     className="nav-links"
                     onClick={closeMobileMenu}
                   >
-                    Check your Event
+                    Set Your Availability
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link
+                    to="/check-event"
+                    className="nav-links"
+                    onClick={closeMobileMenu}
+                  >                                                                  
+                  Check your Event
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                  to="/"
                     className="nav-links"
                     onClick={logOut}
                   >
@@ -130,8 +141,10 @@ function Navbar() {
                     Check your Event
                   </Link>
                 </li>
+                
                 <li className="nav-item">
                   <Link
+                  to="/"
                     className="nav-links"
                     onClick={logOut}
                   >
