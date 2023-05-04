@@ -14,6 +14,7 @@ import DashboardEvents from "./pages/DashboardEvents"
 import Protected from "../src/components/Protected";
 import CheckEvent from './components/CheckEvent';
 import AvailabiltyCheck from './components/AvailabiltyCheck';
+import UserProtected from './components/userProtected';
 
 const App = () => {
     const url  = window.location.pathname
@@ -36,10 +37,13 @@ const App = () => {
             path="/admin/events"
             element={<Protected Component={DashboardEvents} url={window.location.href}/> }
           />
+             <Route
+            path="/check-event"
+            element={<UserProtected Component={CheckEvent} url={window.location.href}/> }
+          />
                     <Route exact path="/login" element={<Login url={url}/>}/>
                     <Route exact path="/sign-up" element={<Signup />}/>
                     <Route exact path="/volunteer" element={<Volunteer />}/>
-                    <Route exact path="/check-event" element={<CheckEvent />}/>
                     <Route exact path="/availability" element={<AvailabiltyCheck />}/>
 
                     

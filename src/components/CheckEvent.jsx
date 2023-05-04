@@ -8,7 +8,6 @@ function CheckEvent() {
 
   return (
     <>
-    <div>CheckEvent</div>
     {
         loginAdmin == "2" ? 
           <PatientEvent/>:<DonorEvent/> 

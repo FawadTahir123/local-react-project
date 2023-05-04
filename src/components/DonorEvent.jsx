@@ -5,20 +5,20 @@ import {Space, Table,Tag} from 'antd'
 function DonorEvent() {
   const columns = [
     {
-      title: 'Name',
+      title: 'Patient Name',
       dataIndex: 'name',
       key: 'name',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'patient Blood Group',
+      dataIndex: 'bood_group',
+      key: 'blood_group',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: ' Event Date',
+      dataIndex: 'date',
+      key: 'date',
     },
     {
       title: 'Tags',
@@ -40,49 +40,40 @@ function DonorEvent() {
         </>
       ),
     },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
-        </Space>
-      ),
-    },
+
   ];
   const data = [
     {
       key: '1',
       name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
+      bood_group: "A+",
+      date: '12/08/2023',
+      tags: ['Pending'],
     },
     {
       key: '2',
       name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
+      bood_group: "A+",
+      date: '11/7/2023',
+      tags: ['Pending'],
     },
     {
       key: '3',
       name: 'Joe Black',
-      age: 32,
-      address: 'Sydney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
+      bood_group: "A+",
+      date: '10/5/2023',
+      tags: ['Completed'],
     },
   ];
   const divStyle = {
     margin: 'auto',
-    width: '80%',
+    width: '50%',
     padding: '10px',
     marginTop: '100px',
 };
   return (
     <>
-    <div className='container'>
+    <div className='container' style={{marginTop:'30px'}}>
           <h2 style={{textAlign:'center'}}>YOUR EVENTS</h2>
     <div style={divStyle}>
 
