@@ -1,5 +1,5 @@
 import { Margin } from '@mui/icons-material'
-import React from 'react'
+import React , {useEffect, useState}from 'react'
 import Navbar from './Home';
 import { Switch,Card,Button }from 'antd'
 import { Link } from 'react-router-dom';
@@ -9,8 +9,66 @@ import { Link } from 'react-router-dom';
 
 function AvailabiltyCheck() {
 
-  const onChange = (checked) => {
+
+  const userID = localStorage.getItem("id")
+  const [checkavailability, setCheckAvailability] = useState('')
+  const getAvailability = async () => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/api/get-user-availability/${userID}`,
+        {
+          method: "GET",
+        }
+      );
+      const result = await res.json(); 
+        setCheckAvailability(result.data[0].availability)
+    
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
+
+
+
+  const onChange = async (checked) => {
     console.log(`switch to ${checked}`);
+    if(checked){
+      try {
+        const res = await fetch(
+          `http://127.0.0.1:5000/api/update-availability/${userID}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id:userID,
+              availability:'available'
+            })
+          }
+        );
+        const result = await res.json();
+        console.log(result);
+      } catch (e) {
+        console.log("error", e);
+      }
+    }else{
+      try {
+        const res = await fetch(
+          `http://127.0.0.1:5000/api/update-availability/${userID}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              availability:'not_available'
+            })
+          }
+        );
+        const result = await res.json();
+        console.log(result);
+      } catch (e) {
+        console.log("error", e);
+      }
+
+    }
   };
 
 
@@ -39,6 +97,11 @@ const buttonStyle = {
   width:'auto'
   
 }
+  useEffect(() =>{
+    getAvailability()
+  },[checkavailability])
+
+console.log(checkavailability,"checkavailability");
   return (
     <>
      
@@ -53,7 +116,12 @@ const buttonStyle = {
           </div> 
       <div style={divStyleforSwitch} className='d-flex'>
       <p style={{fontWeight:'bold'}}>Set Availability</p>
-      <Switch defaultChecked onChange={onChange} />
+      {console.log(checkavailability)}
+     {
+      checkavailability == 'available'?
+      <Switch  defaultChecked={true} onChange={onChange} />
+      :<Switch  defaultChecked={false} onChange={onChange} />
+     }
 
       </div>
     </div>
