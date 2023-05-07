@@ -32,42 +32,19 @@ function PatientEvent() {
     }
   };
 
-  const getPatientEvents= async () => {
-    try {
-      const res = await fetch(
-        `http://127.0.0.1:5000/api/patinet-events/${userID}`,
-        {
-          method: "GET",
-        }
-      );
-      const result = await res.json();
-      setEventData(
-        result.data.map(patient => ({
-          unit: patient.unit,
-          name: patient.first_name +" "+ patient.last_name,
-          blood_group: patient.blood_group.toUpperCase(),
-          date: patient.required_date,
-          tags: [patient.event_status]
-        }))
-      );
-
-    } catch (e) {
-      console.log("error", e);
-    }
+  
+  
+  const divStyle = {
+    margin: 'auto',
+    width: '50%',
+    padding: '10px',
+    marginTop: '100px',
   };
-
-
-    const divStyle = {
-        margin: 'auto',
-        width: '50%',
-        padding: '10px',
-        marginTop: '100px',
-    };
-    const columns = [
-        {
-          title: 'Units',
-          dataIndex: 'unit',
-          key: 'unit',
+  const columns = [
+    {
+      title: 'Units',
+      dataIndex: 'unit',
+      key: 'unit',
           render: (text) => <a>{text}</a>,
         },
         {
@@ -105,12 +82,35 @@ function PatientEvent() {
           ),
         },
       ];
-
+      
+      const getPatientEvents= async () => {
+        try {
+          const res = await fetch(
+            `http://127.0.0.1:5000/api/patinet-events/${userID}`,
+            {
+              method: "GET",
+            }
+          );
+          const result = await res.json();
+          setEventData(
+            result.data.map(patient => ({
+              name: patient.first_name.toUpperCase() +" "+ patient.last_name.toUpperCase(),
+              blood_group: patient.blood_group.toUpperCase(),
+              unit: patient.blood_unit,
+              date: patient.donation_date,
+              tags: [patient.event_status]
+            }))
+          );
+    
+        } catch (e) {
+          console.log("error", e);
+        }
+      };
       const columnsforPatient = [
         {
           title: 'Donor Name',
-          dataIndex: 'donor_name',
-          key: 'donor_name',
+          dataIndex: 'name',
+          key: 'name',
           render: (text) => <a>{text}</a>,
         },
         {
@@ -138,7 +138,7 @@ function PatientEvent() {
                 let color = ''
                 if (tag === 'pending') {
                   color = 'geekblue';
-                }else if(tag === 'approve'){
+                }else if(tag === 'completed'){
                   color = 'green'  
                 }else{
                   color = 'volcano'

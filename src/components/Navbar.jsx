@@ -62,7 +62,7 @@ function Header() {
                      <button className="btn-nav-addlisting mt-2">Your Availability</button>
                      </Link>
                      <Link to="/check-event">
-                     <button className="btn-nav-addlisting mt-2" onClick={clearToken}>Check your Event</button>
+                     <button className="btn-nav-addlisting mt-2">Your Events</button>
                      </Link> 
                     
                      <button className="btn-nav-login mt-2" onClick={clearToken} >LOGOUT</button>
