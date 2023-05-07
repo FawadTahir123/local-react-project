@@ -139,17 +139,18 @@ a {
 }
 /* Home page Styling Start Here */
 .header {
-  background: #2b2d42;
-  position: static;
+  background: #fff;
+  position: fixed;
   width: 100vw;
   z-index: 1;
 }
 .header-username {
-  color: #fff;
+  color: black;
   padding-top: 11px;
   margin: 6px;
   text-align: center;
-  font-weight: 500;
+  font-weight: 400;
+  padding-right: 20px;
 }
 
 .navbar {
@@ -208,9 +209,11 @@ a {
   align-self: center;
 }
 .btn-nav-addlisting:hover {
-  color: #fff;
+  color: #ff5348;
   background-color: rgb(250, 250, 250, 0.3);
   transition: 0.5;
+  border: 1px solid #ff5348;
+
 }
 .btn-nav-login {
   display: flex;
@@ -221,14 +224,14 @@ a {
   height: 44px;
   background: transparent;
   border-radius: 5px;
-  border: 1px solid #fff;
-  color: #fff;
+  border: 1px solid #ff5348;
+  color: #ff5348;
   margin-right: 10px;
 }
 .btn-nav-login:hover {
   color: #fff;
 
-  background-color: rgb(250, 250, 250, 0.3);
+  background-color: #ff5348;
   transition: 0.5;
 }
 /* Banner Styling Start Here */
@@ -2492,4 +2495,66 @@ height: 127px;
 /* background: #8C9CAD; */
 border-radius: 10px;
     
+}
+.btns{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+  width: 183px;
+  height: 44px;
+  background: #ff5348;
+  border-radius: 5px;
+  margin-right: 20px;
+  border: 1px solid #ff5348;
+  color: #f0f0f0;
+  align-self: center;
+}
+
+.btns:hover{
+  color: #fff  !important;
+  background-color:#ff5348 ;
+  border: #fff 1px solid !important;
+}
+
+.feature_list {
+  margin-top: 50px;
+}
+.feature ul li{
+ margin-top: 20px !important;
+ align-items: center;
+ padding-left: 31% !important; 
+}
+
+.feature ul li p {
+  color: #ff5348;
+  margin-left: 10px !important;
+  font-size: large;
+}
+.MuiSvgIcon-root{
+  color: #ff5348;
+  font-size: 30px !important;
+}
+
+.sign-up-body {
+  background-image: url('./images/blood.jpg'); 
+  width: 100%;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.MainButtons{
+  color: #ff5348;
+  border: #fff 1px solid !important;
+  background-color: #fff;
+
+}
+
+.MainButtons:hover{
+  background-color: #ff5348 !important;
+  color: white !important;
 }

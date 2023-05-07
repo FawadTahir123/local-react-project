@@ -1,36 +1,33 @@
 import React from 'react';
 import './Cards.css';
 import { Card } from 'antd';
+import BlurOnTwoToneIcon from '@mui/icons-material/BlurOnTwoTone';
+
 
 function Cards() {
   return (
     <div className='cards'>
       <h1>Key Features</h1>
-      <div className='cards__container'>
-        <div className='cards__wrapper'>
-          <ul className='cards__items'>
-            <Card
-            style={{margin: "5%"}}
-              title='Spread the Word to Save Lives'
-              label='Spread the Word'
-            />
-            <Card
-                        style={{margin: "5%"}}
+      <div className='container feature_list'>
+        <div className='container feature'>
+          <ul className=''>
+            <li className='d-flex'>
+            <BlurOnTwoToneIcon/>
+             <p>Spread the Word to Save Lives</p> 
+            </li>
+            <li className='d-flex'>
+            <BlurOnTwoToneIcon/>
+             <p>Help us in saving lives by adopting a thalassemic patient</p> 
+            </li>
+            <li className='d-flex'>
+            <BlurOnTwoToneIcon/>
+             <p>Ready to donate blood to save lives</p> 
+            </li>
+            <li className='d-flex'>
+            <BlurOnTwoToneIcon/>
+             <p>Need blood or need a sponsor</p> 
+            </li>
 
-              title='Help us in saving lives by adopting a thalassemic patient'
-            />
-          </ul>
-          <ul className='cards__items'>
-            <Card
-                        style={{margin: "5%"}}
-
-              title='Ready to donate blood to save lives'
-            />
-            <Card
-                        style={{margin: "5%"}}
-
-              title='Need blood or need a sponsor'  
-            />
           </ul>
         </div>
       </div>

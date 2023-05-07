@@ -1,9 +1,60 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {Space, Table,Tag} from 'antd'
 
 
 function PatientEvent() {
+
+  const userID = localStorage.getItem("id");
+  const [patientData, setPatientData] = useState([])
+  const [eventData, setEventData] = useState([])
+
+  const getPatientRequest= async () => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/api/patient-request/${userID}`,
+        {
+          method: "GET",
+        }
+      );
+      const result = await res.json();
+      setPatientData(
+        result.data.map(patient => ({
+          unit: patient.unit,
+          blood_group: patient.blood_group.toUpperCase(),
+          date: patient.required_date,
+          tags: [patient.status]
+        }))
+      );
+
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
+
+  const getPatientEvents= async () => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/api/patinet-events/${userID}`,
+        {
+          method: "GET",
+        }
+      );
+      const result = await res.json();
+      setEventData(
+        result.data.map(patient => ({
+          unit: patient.unit,
+          name: patient.first_name +" "+ patient.last_name,
+          blood_group: patient.blood_group.toUpperCase(),
+          date: patient.required_date,
+          tags: [patient.event_status]
+        }))
+      );
+
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
 
 
     const divStyle = {
@@ -14,31 +65,35 @@ function PatientEvent() {
     };
     const columns = [
         {
-          title: 'Donor Name',
-          dataIndex: 'name',
-          key: 'name',
+          title: 'Units',
+          dataIndex: 'unit',
+          key: 'unit',
           render: (text) => <a>{text}</a>,
         },
         {
-          title: 'Donor Blood Group',
+          title: 'Blood Group Req.',
           dataIndex: 'blood_group',
           key: 'blood_group',
         },
         {
-          title: 'Event Date',
+          title: 'Req. Date',
           dataIndex: 'date',
           key: 'date',
         },
         {
-          title: 'Event Status',
+          title: 'Status',
           key: 'tags',
           dataIndex: 'tags',
           render: (_, { tags }) => (
             <>
               {tags.map((tag) => {
-                let color = tag.length > 5 ? 'geekblue' : 'green';
-                if (tag === 'loser') {
-                  color = 'volcano';
+                let color = ''
+                if (tag === 'pending') {
+                  color = 'geekblue';
+                }else if(tag === 'approve'){
+                  color = 'green'  
+                }else{
+                  color = 'volcano'
                 }
                 return (
                   <Tag color={color} key={tag}>
@@ -50,38 +105,79 @@ function PatientEvent() {
           ),
         },
       ];
-      const data = [
+
+      const columnsforPatient = [
         {
-          key: '1',
-          name: 'John Brown',
-          blood_group: 'A+',
-          date: '1/05/2023',
-          tags: ['pending'],
+          title: 'Donor Name',
+          dataIndex: 'donor_name',
+          key: 'donor_name',
+          render: (text) => <a>{text}</a>,
         },
         {
-          key: '2',
-          name: 'Jim Green',
-          blood_group: "A+",
-          date: '4/6/2023',
-          tags: ['approve'],
+          title: 'Blood Group Req.',
+          dataIndex: 'blood_group',
+          key: 'blood_group',
         },
         {
-          key: '3',
-          name: 'Joe Black',
-          blood_group: 'A-',
-          date: 'Sydney No. 1 Lake Park',
-          tags: ['completed'],
+          title: 'Unit',
+          dataIndex: 'unit',
+          key: 'unit',
+        },
+        {
+          title: 'Event date',
+          dataIndex: 'date',
+          key: 'date',
+        },
+        {
+          title: 'Status',
+          key: 'tags',
+          dataIndex: 'tags',
+          render: (_, { tags }) => (
+            <>
+              {tags.map((tag) => {
+                let color = ''
+                if (tag === 'pending') {
+                  color = 'geekblue';
+                }else if(tag === 'approve'){
+                  color = 'green'  
+                }else{
+                  color = 'volcano'
+                }
+                return (
+                  <Tag color={color} key={tag}>
+                    {tag.toUpperCase()}
+                  </Tag>
+                );
+              })}
+            </>
+          ),
         },
       ];
+
+    
+      useEffect(() => {
+       getPatientRequest()
+       getPatientEvents()
+      }, []);
+
+
+console.log(patientData, "patientData");
+
+console.log(eventData, "patientEvent");
       return (
         <>
         <div className='container' style={{marginTop:'30px'}}>
               <h2 style={{textAlign:'center'}}>YOUR EVENTS</h2>
         <div style={divStyle}>
+        
     
-        <Table   pagination={false} columns={columns} dataSource={data} />;
+        <Table   pagination={false} columns={columnsforPatient} dataSource={eventData}  />
 
       <h2 style={{textAlign:'center'}}>Request Status</h2>
+      <div className='mt-5'>
+
+      <Table  bordered pagination={false} columns={columns} dataSource={patientData} />;
+      </div>
         </div>
         </div>
         

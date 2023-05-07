@@ -52,6 +52,33 @@ function RequestsTable() {
 
   const Navigate= useNavigate()
 
+  const changeRequestStatus = async (id) => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/api/approve-request/${id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+                status: 'approve'
+                      
+                    }),
+        }
+      );
+      data();
+      const result = await res.json();
+      console.log(result);
+      // setEditRequest(result.data[0]);
+      // setRequestStatus(result.data[0].status)
+      // setBloodGroup(result.data[0].blood_group)
+
+      // console.log(result.data[0].status, "result");
+    } catch (e) {
+      console.log("error", e);
+    }
+    // setModalShow(true);
+  };
+
   const getEditData = async (request) => {
     try {
       const res = await fetch(
@@ -266,7 +293,9 @@ function RequestsTable() {
               <th>
                 Action
               </th>
-  
+              <th>
+                Action on Req.
+              </th>
             </tr>
           </thead>
           {showTableLoader === false ? (
@@ -339,6 +368,9 @@ function RequestsTable() {
                           />
                         </span>
                       )}
+                    </td>
+                    <td>
+                      <button className="btn-nav-login" onClick={(e) => changeRequestStatus(request.id)}>Approved</button>
                     </td>
                   </tr>
                 );

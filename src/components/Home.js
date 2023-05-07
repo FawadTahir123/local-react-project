@@ -3,6 +3,7 @@ import { Button } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import HeroSection from "./HeroSection";
+import NavbarJS from "./Navbar";
 import Cards from "./Cards";
 import Footer from "./Footer";
 
@@ -14,6 +15,7 @@ function Navbar() {
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
   const navigate = useNavigate()
+
 
 
 
@@ -38,7 +40,8 @@ function Navbar() {
 
   return (
     <>
-      <nav className="navbar bg-dark">
+    <NavbarJS/>
+      {/* <nav className="navbar bg-dark">
         <div className="navbar-container">
           <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
             Thallasemic Foundation
@@ -156,7 +159,7 @@ function Navbar() {
             
           </ul>
         </div>
-      </nav>
+      </nav> */}
       <HeroSection />
       <Cards />
       <Footer />
