@@ -20,6 +20,8 @@ import {
   RedEnvelopeOutlined,
   UserOutlined,
   HomeOutlined,
+  LoginOutlined
+
 } from "@ant-design/icons";
 import { Alert } from "antd";
 import Header from "../components/Navbar";
@@ -99,6 +101,7 @@ const Signup = () => {
         <Card
           title="Sign Up"
           style={{ backgroundColor: "#ffe8e7", width: "100%"}}
+          headStyle={{textAlign: 'center', fontSize:'20px', fontWeight:'bold',color:"#ff5348"}}
         >
           <Spin spinning={loading}>
             <Form
@@ -369,6 +372,7 @@ const Signup = () => {
                   htmlType="submit"
                   className="MainButtons"
                   block
+                  icon={<LoginOutlined/>}
                 >
                   Submit
                 </Button>

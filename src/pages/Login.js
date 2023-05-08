@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { BASE_URL } from '../utils'
 import { Link, useNavigate } from 'react-router-dom'
+import Header from "../components/Navbar";
 import { message, Spin, Button, Checkbox, Form, Input, Card, } from 'antd'
 import {LockOutlined, LoginOutlined, UserOutlined} from "@ant-design/icons";
 import { Alert } from 'antd';
@@ -72,19 +73,19 @@ const Login = ({url}) => {
         margin: 'auto',
         width: '50%',
         padding: '10px',
-        marginTop: '100px',
+        marginTop: '300px',
+        marginLeft: '37%'
     };
 
     return (
+        <body className="sign-up-body">
+            <Header/>
         <div style={divStyle}>
+
             <Card
                 title="Login"
-                style={{backgroundColor: "lightgray", width: '100%' }}
-                extra={
-                    <Button type='link' block>
-                        <Link to="/sign-up">Sign Up</Link>
-                    </Button>
-                }
+                style={{backgroundColor: "#ffe8e7", width: '50%' }}
+                headStyle={{textAlign: 'center', fontSize:'20px', fontWeight:'bold', color:"#ff5348"}}
             >
                 <Spin spinning={loading}>
                     <Form
@@ -131,7 +132,7 @@ const Login = ({url}) => {
                         >
                             {showAlert? <Alert message={showMessage} type={showStatus} />: <div></div>}
 
-                            <Button style={{marginTop: "15px"}} type="primary" htmlType="submit" block icon={<LoginOutlined/>}>
+                            <Button style={{marginTop: "15px"}} type="primary" htmlType="submit" className="MainButtons" block icon={<LoginOutlined/>}>
                                 Log In
                             </Button>
 
@@ -140,6 +141,7 @@ const Login = ({url}) => {
                 </Spin>
             </Card>
         </div>
+        </body>
     );
 }
 
