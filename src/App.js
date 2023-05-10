@@ -15,6 +15,7 @@ import Protected from "../src/components/Protected";
 import CheckEvent from './components/CheckEvent';
 import AvailabiltyCheck from './components/AvailabiltyCheck';
 import UserProtected from './components/userProtected';
+import AboutUsPage from './pages/AboutUsPage';
 
 const App = () => {
     const url  = window.location.pathname
@@ -45,6 +46,7 @@ const App = () => {
                     <Route exact path="/sign-up" element={<Signup />}/>
                     <Route exact path="/volunteer" element={<Volunteer />}/>
                     <Route exact path="/availability" element={<AvailabiltyCheck />}/>
+                    <Route exact path="/about-us" element={<AboutUsPage />}/>
 
                     
                 </Routes>

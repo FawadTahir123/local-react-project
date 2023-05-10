@@ -39,56 +39,44 @@ function Header() {
                         </ul>
                     {
                         !currentUserLoginId ? <form className="d-flex">
-                        <Link to="/login" className="btn-nav-login">Login</Link>
-                        <Link to="/sign-up" className="btn-nav-addlisting">Register</Link>
+                        <Link to="/about-us" className="btn-nav-login">About Us</Link>
+                        <Link to="/sign-up" className="btn-nav-login">How It Works</Link>
                     </form> : <div class="btn-group signout-user ">
-                    {currneetUserLoginRole === "2" ? 
-                    <>
+                    
+                    
                      <p className='header-username'>{username}</p>
                     <Link to="/volunteer">
-                    <button className="btn-nav-addlisting mt-2">Request for blood</button>
+                    <button className="btn-nav-login mt-2">About Us</button>
                     </Link>
                      <Link to="/check-event">
-                     <button className="btn-nav-addlisting mt-2">Check your Event</button>
+                     <button className="btn-nav-login mt-2">How It Works</button>
                      </Link>
                      
-                     <button className="btn-nav-login mt-2" onClick={clearToken}>LOGOUT</button>
+                     <button className="btn-nav-addlisting mt-2" onClick={clearToken}>LOGOUT</button>
                   
-                     </>
-                     : currneetUserLoginRole === "3" ? 
-                     <>
-                     <p className='header-username ml-3'>{username}</p>
-                     <Link to="/availability">
-                     <button className="btn-nav-addlisting mt-2">Your Availability</button>
-                     </Link>
-                     <Link to="/check-event">
-                     <button className="btn-nav-addlisting mt-2">Your Events</button>
-                     </Link> 
+                   
+                     
+                
                     
-                     <button className="btn-nav-login mt-2" onClick={clearToken} >LOGOUT</button>
-                     </> : <>
-                     <p className='header-username'>{username}</p>
-                     <Link
-                    to="/volunteer"
-                    className="btn-nav-addlisting mt-2"
-                  >
-                    Request for blood
-                  </Link>
-                  <Link
-                    to="/check-event"
-                    className="btn-nav-addlisting mt-2"
-                  >
-                    Check your Event
-                  </Link>
-                  <Link
-                  to="/"
-                    className="btn-nav-login mt-2"
-                    onClick={clearToken}
-                  >
-                    LOG OUT
-                  </Link>
-                     </>
-                    }
+                     
+                     
+                     
+                     
+              
+                     
+                    
+                    
+                     
+                     
+             
+               
+                   
+               
+                
+                
+                  
+                    
+                  
                     
                     {/* <button  onClick={clearToken} className="btn-nav-login mt-2">Logout</button>
                     
