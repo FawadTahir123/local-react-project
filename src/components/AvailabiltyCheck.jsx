@@ -1,8 +1,9 @@
-import { Margin } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import Navbar from "./Home";
 import { Switch, Card, Button } from "antd";
 import { Link } from "react-router-dom";
+import Header from "../components/Navbar";
+
 
 function AvailabiltyCheck() {
   const userID = localStorage.getItem("id");
@@ -97,7 +98,7 @@ function AvailabiltyCheck() {
     padding: "10px",
     marginTop: "100px",
     justifyContent: "space-between",
-    backgroundColor: "lightgray",
+    backgroundColor: "#ff5348",
     width: "80%",
     borderRadius: "10px",
   };
@@ -112,25 +113,28 @@ function AvailabiltyCheck() {
   }, [ischecked]);
 
   return (
-    <>
+    <body className='check-event'>
+      <Header/>
       <div className="container" style={divStyle}>
         <div style={{ textAlign: "center" }}>
-          <h1 style={{ marginTop: "20px" }}>Set Your Availability</h1>
+          <h1 style={{ marginTop: "20px", color:'#fff',fontWeight: "bold" }}>Set Your Availability</h1>
         </div>
         <div style={buttonStyle}>
-          <Button style={{ color: "white", background: "#1677ff" }}>
+          <Button style={{ color: "white", background: "#ff5348" }}>
             <Link to="/">Back</Link>
           </Button>
         </div>
         <div style={divStyleforSwitch} className="d-flex">
-          <p style={{ fontWeight: "bold" }}>Set Availability</p>
+          <p style={{ fontWeight: "bold", color:'#fff'}}>Set Availability</p>
 {
   !disable ? 
   <Switch checked={ischecked}  onChange={onChange} /> : <Switch checked={false} disabled={true} onChange={onChange} />
 }
         </div>
       </div>
-    </>
+    </body>
+    
+  
   );
 }
 

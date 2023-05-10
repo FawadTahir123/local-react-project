@@ -2511,6 +2511,8 @@ border-radius: 10px;
   border: 1px solid #ff5348;
   color: #f0f0f0;
   align-self: center;
+  font-size: 17px;
+  font-weight: 400;
 }
 
 .btns:hover{

@@ -10,51 +10,51 @@ function Facts() {
                     
                     <div className="col-md-3 ">
                         <div className="fact-box">
-                            <h4>6M</h4>
-                            <p>active listings worldwide</p>
+                            <h4>2K+</h4>
+                            <p>Patients</p>
                             <span className="d-block">as of March 31, 2022</span>
                         </div>
                     </div>
 
                     <div className="col-md-3 ">
                         <div className="fact-box">
-                            <h4>6m</h4>
-                            <p >active listings worldwide</p>
+                            <h4>2K+</h4>
+                            <p >Donors</p>
                             <span className="d-block">as of March 31, 2022</span>
                         </div>
                     </div>
 
                     <div className="col-md-3 ">
                         <div className="fact-box">
-                            <h4>6m</h4>
-                            <p>active listings worldwide</p>
+                            <h4>2K+</h4>
+                            <p>Requests</p>
                             <span className="d-block">as of March 31, 2022</span>
                         </div>
                     </div>
 
                     <div className="col-md-3 ">
                         <div className="fact-box">
-                            <h4>6m</h4>
-                            <p>active listings worldwide</p>
+                            <h4>2K+</h4>
+                            <p>Events Accomplished</p>
                             <span className="d-block">as of March 31, 2022</span>
                         </div>
                     </div>
 
-                    <div className="col-md-3 ">
+                    {/* <div className="col-md-3 ">
                         <div className="fact-box">
                             <h4>6m</h4>
                             <p>active listings worldwide</p>
                             <span className="d-block">as of March 31, 2022</span>
                         </div>
-                    </div>
+                    </div> */}
 
-                    <div className="col-md-3 ">
+                    {/* <div className="col-md-3 ">
                         <div className="fact-box">
                             <h4>6m</h4>
                             <p>active listings worldwide</p>
                             <span className="d-block">as of March 31, 2022</span>
                         </div>
-                    </div>
+                    </div> */}
 
                 </div>
                
