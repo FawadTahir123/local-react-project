@@ -18,9 +18,9 @@ function DashboardRequestsBody() {
   const [users, setUsers] = useState([]);
   const [showStatus, setStatusAlert] = useState("");
   const [showMessage, setMessageAlert] = useState("");
-  const [categories, setCategories] = useState([]);
+  const [patientsData, setPatients] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedPatient, setSelectedPatient] = useState("");
   const [flag, setFlag] = useState(false);
   const [allRequest, setAllRequest] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -31,28 +31,12 @@ function DashboardRequestsBody() {
   const [initialpage, setInitialpage] = useState(0);
   const [showTableLoader, setTableloader] = useState(false);
   const [filterState, setFilterState] = useState(false);
-  const [services, setServices] = useState([]);
+  const [BloodGroup, setBloodGroup] = useState("");
 
-  // const [listing, setListing] = useState({
-  //   user_id: "",
-  //   location: "",
-  //   category_id: "",
-  //   menu_type: "",
-  //   services: "",
-  //   rating: "",
-  //   rating_count: "",
-  //   image_link: "",
-  //   video_link: "",
-  //   url: "",
-  //   start_time: "",
-  //   end_time: "",
-  //   max_price: "",
-  //   min_price: "",
-  //   phn_number: "",
-  //   description: "",
-  //   name: "",
-  //   address: "",
-  // });
+  const [requestData, setRequest] = useState({
+    units: "",
+    required_date: "",
+  });
 
   useEffect(() => {
     data();
@@ -115,156 +99,75 @@ function DashboardRequestsBody() {
     }
   };
 
-  // const getCategories = async (e) => {
-  //   try {
-  //     const res = await fetch(
-  //       `https://test-wrangler.listing.workers.dev/api/get-sub-categories`,
-  //       {
-  //         method: "GET",
-  //       }
-  //     );
-  //     const result = await res.json();
-  //     const res2 = await fetch(
-  //       `https://test-wrangler.listing.workers.dev/api/get-all-listing-user`,
-  //       {
-  //         method: "GET",
-  //       }
-  //     );
-  //     const result2 = await res2.json();
-  //     setCategories(result.results);
-  //     setUsers(result2.results);
-  //     setSelectedUser(result2.results[0].id)
-  //     setModalShow(true);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  //   setModalShow(true);
-  // };
+  const addRequestModal = async (e) => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/api/get-all-patients`,
+        {
+          method: "GET",
+        }
+      );
+      const result = await res.json()
+    setPatients(result.data);
+    setModalShow(true);
+    } catch (e) {
+      console.log(e);
+    }
+    // setModalShow(true);
+  };
 
-  // const addListing = async (e) => {
-  //   e.preventDefault();
-  //   if (listing.location === "") {
-  //     setMessageAlert("Please enter Location");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if (listing.name === "") {
-  //     setMessageAlert("Please enter Listing Name");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if (listing.menu_type === "") {
-  //     setMessageAlert("Please enter Comma Seprated Menu Types");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if (listing.services === "") {
-  //     setMessageAlert("Please enter Comma Seprated Services");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if (listing.rating === "") {
-  //     setMessageAlert("Please enter Rating");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if (listing.rating_count === "") {
-  //     setMessageAlert("Please enter Rating Count");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if (listing.image_path === "") {
-  //     setMessageAlert("Please enter Image Url");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if (listing.video_path === "") {
-  //     setMessageAlert("Please enter Video Url");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if (listing.description === "") {
-  //     setMessageAlert("Please enter Description");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if (listing.url === "") {
-  //     setMessageAlert("Please enter URL");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if (listing.timing === "") {
-  //     setMessageAlert("Please enter Timing");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if (listing.address === "") {
-  //     setMessageAlert("Please enter Address");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-
-  //   } else if(listing.min_price  === ""){
-  //     setMessageAlert("Please enter Minimum Price");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if(listing.max_price === ""){
-  //     setMessageAlert("Please enter Maximum Price");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   } else if(listing.phn_number === ""){
-  //     setMessageAlert("Please enter Phone Number");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   }else if(listing.start_time === ""){
-  //     setMessageAlert("Please enter Start Time");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   }else if(listing.end_time === ""){
-  //     setMessageAlert("Please enter End Time");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   }else if (listing.min_price >= listing.max_price) {
-  //     setMessageAlert("Menus maximum price cannot be less than or equal to minimum price. ");
-  //     setStatusAlert("error");
-  //     setShowAlert(true);
-  //   }else {
-  //     try {
-  //       const res = await fetch(
-  //         `https://test-wrangler.listing.workers.dev/api/add-listing`,
-  //         {
-  //           method: "POST",
-  //           headers: { "Content-Type": "application/json" },
-  //           body: JSON.stringify({
-  //             sub_category_id: selectedCategory,
-  //             rating: listing.rating,
-  //             rating_count: listing.rating_count,
-  //             menu_type: listing.menu_type,
-  //             location: listing.location,
-  //             services: listing.services,
-  //             description: listing.description,
-  //             url: listing.url,
-  //             image_path: listing.image_link,
-  //             video_path: listing.video_link,
-  //             timing: listing.timing,
-  //             user_id: selectedUser,
-  //             name: listing.name,
-  //             address: listing.address,
-  //             max_price: listing.max_price,
-  //             min_price: listing.min_price,
-  //             timing: listing.start_time + " to " + listing.end_time,
-  //             phone_number: listing.phn_number,
-  //             start_time: listing.start_time,
-  //             end_time: listing.end_time
-  //           }),
-  //         }
-  //       );
-  //       // const result = await res.json();
-  //       CardsData();
-  //       data();
-  //       setModalShow(false);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   }
-  // };
-  // // const handleInput = (e) => {
-  //   e.preventDefault();
-  //   setListing({ ...listing, [e.target.name]: e.target.value });
-  // };
+  const addRequest = async (e) => {
+    e.preventDefault();
+    if (requestData.units === "") {
+      setMessageAlert("Please Enter Required Units");
+      setStatusAlert("error");
+      setShowAlert(true);
+    } else if (requestData.required_date === "") {
+      setMessageAlert("Please enter Required Date");
+      setStatusAlert("error");
+      setShowAlert(true);
+    } else if (selectedPatient === "") {
+      setMessageAlert("Please Select the Patient");
+      setStatusAlert("error");
+      setShowAlert(true);
+    } else if (BloodGroup === "") {
+      setMessageAlert("Please Select the Blood Group");
+      setStatusAlert("error");
+      setShowAlert(true);
+    }else {
+      console.log(requestData);
+      try {
+        const res = await fetch(
+          `http://127.0.0.1:5000/api/approve-request`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              unit: requestData.units,
+              required_date : requestData.required_date,
+              blood_group: BloodGroup,
+              id : selectedPatient
+            }),
+          }
+        );
+        const result = await res.json();
+        CardsData();
+        data();
+        setModalShow(false);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+  const handleInput = (e) => {
+    e.preventDefault();
+    setRequest({ ...requestData, [e.target.name]: e.target.value });
+  };
 
   // const handleChange = (e) => {
   //   setSelectedUser(e.target.value);
   // };
-
+console.log(patientsData);
   // useEffect(() => {
   //   console.log("here useEffect", selectedUser)
   // },[selectedUser])
@@ -295,10 +198,10 @@ function DashboardRequestsBody() {
         <DashboardHeader title={"Requests"} />
         <div className="dash-user-content">
           <div className="d-flex align-items-center total-over-add">
-            {/* <Link to="/admin/listingForm" className="ms-auto add-user-btn">
+            <Link onClick={addRequestModal} className="ms-auto add-user-btn">
               <img src={add} alt="..." />
-              Add Events
-            </Link> */}
+              Add Requests
+            </Link>
           </div>
         </div>
 
@@ -307,6 +210,116 @@ function DashboardRequestsBody() {
           <RequestsTable />
         </div>
       </div>
+
+      <Modal
+          className="edit-modal"
+          show={modalShow}
+          size="md"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header className="d-flex justify-content-center color-orange font-family-poppins">
+            <img style={{ cursor: "pointer" }} src={pen} alt="..." width="24" />
+            <Modal.Title id="contained-modal-title-vcenter">
+              &nbsp; Create User
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <form className="login-form ">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="mb-3">
+                  <Label className="edit-input-label">Blood Group*</Label>
+
+                    <select
+                      className="edit-form-control padding-rigth-15"
+                      value={BloodGroup}
+                      onChange={(e) => setBloodGroup(e.target.value)}
+                    >
+                      <option>Select</option>
+                      <option value={"ab+"}>AB+</option>
+                      <option value={"a-"}>A-</option>
+                      <option value={"ab-"}>AB-</option>
+                      <option value={"b+"}>B+</option>
+                      <option value={"a+"}>A+</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <Label className="edit-input-label">Units Required*</Label>
+
+                    <input
+                      type="number"
+                      name="units"
+                      value={requestData.units}
+                      onChange={handleInput}
+                      className="edit-form-control"
+                      placeholder="Units"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <Label className="edit-input-label">Required Date*</Label>
+
+                    <input
+                      type="date"
+                      name="required_date"
+                      value={requestData.required_date}
+                      onChange={handleInput}
+                      className="edit-form-control"
+                      placeholder="Required Date"
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <Label className="edit-input-label">Patient*</Label>
+                    <select
+                      className="edit-form-control padding-rigth-15"
+                      value={selectedPatient}
+                      onChange={(e) => setSelectedPatient(e.target.value)}
+                    >
+                      <option>Select</option>
+                      {patientsData?.map((element) => {
+                  return (      
+                      <option value={element.id}>{element.first_name} {element.last_name}</option>
+                  );})}
+                  
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+
+              {showAlert ? (
+                <Alert message={showMessage} type={showStatus} />
+              ) : (
+                ""
+              )}
+              <div className="row">
+                <div className="col-md-6">
+                  <button
+                    className="bg-white-cusd"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setModalShow(false);
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+                <div className="col-md-6">
+                  <button onClick={addRequest}>Save</button>
+                </div>
+              </div>
+            </form>
+          </Modal.Body>
+        </Modal>
     </RequestsGlobals.Provider>
   );
 }

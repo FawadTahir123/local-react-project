@@ -33,6 +33,10 @@ video {
     'Lucida Sans', Arial, sans-serif;
 }
 
+.alert{
+  margin-top: 20px;
+}
+
 .hero-btns {
   margin-top: 32px;
 }

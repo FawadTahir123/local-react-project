@@ -17,7 +17,7 @@ function AboutMission() {
                         <div className='col-md-6'>
                             <div className='our-miss-text'>
                                 <label className='theme-label-mission'>Our Mission</label>
-                                <h4>How the company works</h4>
+                                <h4>How we work</h4>
                                 <p>
                                 Thalassemia is commonly known to represent Thalassemia Major patients, who are born to two thalassemia minor carriers. Due to lack of awareness before giving birth to a child, Thalassemia is a widespread, genetic disorder especially in Punjab province of Pakistan. However, most thalassemia major patients, if managed properly with regular blood transfusions, can live a long healthy and normal life. 
                                 <br/>

@@ -1,60 +1,56 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { BASE_URL } from "../utils";
 import {
   Select,
-  message,
   Spin,
   Button,
-  Checkbox,
   Form,
-  Radio,
   Input,
   Card,
-  Space,
+  notification
 } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   LockOutlined,
   MailOutlined,
   RedEnvelopeOutlined,
   UserOutlined,
   HomeOutlined,
-  LoginOutlined
+  LoginOutlined,
+  SmileOutlined
+
 
 } from "@ant-design/icons";
 import { Alert } from "antd";
 import Header from "../components/Navbar";
 
 const Signup = () => {
-  const nav = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [donorState, setDonorState] = useState(1);
   const [showAlert, setShowAlert] = useState(false);
   const [showStatus, setStatusAlert] = useState("");
-  const [showMessage, setMessageAlert] = useState("");
-  const [donorStatus, setDonorStatus] = useState("");
+  const [showMessage, setMessageAlert] = useState(""); 
+  const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
-  // const handleInput = (e) => {
-  //     e.persist();
-  //     setUserInput({...userInput,[e.target.name]: e.target.value});
-  // }
-
-  const onChangeForDonor = (e) => {
-    // console.log('radio checked', e.target.value);
-    setDonorState(e.target.value);
-  };
-  const onChangeForDonorStatus = (e) => {
-    // console.log('radio checked for donor', e.target.value);
-    setDonorStatus(e.target.value);
-  };
+ 
+  const openNotification = () => {
+    api.open({
+      message:'Notification tilte',
+      description:"hello your are new",
+      placement:'top',
+      icon: (<SmileOutlined  style={{
+        color: '#108ee9',
+      }}/>),
+    })
+  }
+  
 
   const onFinish = async (values) => {
-    console.log("Success:", values);
     values.availability = "not_available";
+    values.user_role = "3"
+    values.account_status = "HOLD"
+    console.log("Success:", values);
     var mailformat = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
     var passw = /^(?=.*[a-z]).{8,15}$/;
-
+    setLoading(true)
     if (values.email.match(mailformat)) {
       if (values.password.match(passw)) {
         const response = await fetch("http://127.0.0.1:5000/auth/register", {
@@ -62,7 +58,7 @@ const Signup = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(values),
         });
-
+        setLoading(false)
         const data = await response.json();
         if (data.status === 0) {
           setMessageAlert("Email Already Registered");
@@ -74,6 +70,7 @@ const Signup = () => {
           setShowAlert(true);
           console.log("Error in Creating User");
         } else {
+          openNotification()
           navigate("/login");
         }
       } else {
@@ -85,6 +82,8 @@ const Signup = () => {
       alert("You have entered an invalid email address!");
     }
   };
+  
+
 
   const divStyle = {
     margin: "auto",
@@ -291,50 +290,6 @@ const Signup = () => {
                     </div>
                 </div>
               </div>
-
-              <Form.Item
-                label="User Role"
-                name="user_role"
-                rules={[
-                  {
-                    required: true,
-                    message: "Role is required",
-                  },
-                ]}
-              >
-                <Radio.Group onChange={onChangeForDonor}>
-                  <Space direction="vertical">
-                    <Radio value={2}>Patient</Radio>
-                    <Radio value={3}>Donor</Radio>
-                    {donorState === 3 ? (
-                      <>
-                        <Form.Item
-                          label="Donor Status"
-                          name="donor_status"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Role is required",
-                            },
-                          ]}
-                        >
-                          <Radio.Group onChange={onChangeForDonorStatus}>
-                            <Radio value={"one_time"}>One time</Radio>
-                            <Radio value={"adopt_a_child"}>Adopt a Child</Radio>
-                          </Radio.Group>
-                        </Form.Item>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </Space>
-                </Radio.Group>
-              </Form.Item>
-
-              
-
-             
-
               <Form.Item
                 label="Email"
                 name="email"

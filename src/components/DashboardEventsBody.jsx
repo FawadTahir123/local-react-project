@@ -23,7 +23,8 @@ function DashboardEventsBody() {
   // const [selectedCategory, setSelectedCategory] = useState("");
   // const [selectedUser, setSelectedUser] = useState("");
   // const [flag, setFlag] = useState(false);
-  const [alllisting, setAllListing] = useState([]);
+  const [allPatientEvents, setAllPatientEvents] = useState([]);
+  const [allDonorEvents, setAllDonorEvents] = useState([]);
   const [loader, setLoader] = useState(false);
   const [totalPatients, setTotalPatients] = React.useState(0);
   const [totalDonors, setTotalDonors] = React.useState(0);
@@ -56,7 +57,7 @@ function DashboardEventsBody() {
   });
 
   useEffect(() => {
-    // data();
+    data();
     CardsData();
     // setInitialpage(0);
   }, []);
@@ -83,15 +84,15 @@ function DashboardEventsBody() {
     setTableloader(true);
     try {
       const res = await fetch(
-        `https://test-wrangler.listing.workers.dev/api/get-all-listing?page=1&limit=10`,
+        `http://127.0.0.1:5000/api/get-all-events`,
         {
           method: "GET",
         }
       );
       const result = await res.json();
+      setAllPatientEvents(result.data[0]);
+      setAllDonorEvents(result.data[1]);
       setTableloader(false);
-      setAllListing(result);
-      setServices(result.services);
       // setFlag(true);
     } catch (err) {
       console.log(err.message);
@@ -109,7 +110,7 @@ function DashboardEventsBody() {
       );
       const result = await res.json();
       setTableloader(false);
-      setAllListing(result);
+      // setAllListing(result);
       setServices(result.services);
       // console.log(result.count)
     } catch (err) {
@@ -270,23 +271,27 @@ function DashboardEventsBody() {
   // useEffect(() => {
   //   console.log("here useEffect", selectedUser)
   // },[selectedUser])
+console.log(allPatientEvents, "all patient");
+console.log(allDonorEvents, "all donor");
+ 
   return (
     <EventsGlobals.Provider
       value={{
-        // data: data,
+        data: data,
         // data1: data1,
         CardsData: CardsData,
         // setInitialpage: setInitialpage,
         // setAllListing: setAllListing,
         // // setTableloader: setTableloader,
         // initialpage: initialpage,
-        // alllisting: alllisting,
+        allDonorEvents: allDonorEvents,
+        allPatientEvents: allPatientEvents,
         Cardsloader: loader,
         totalPatients: totalPatients,
         totalDonors:totalDonors,
         totalRequests: totalRequests,
         totalEvents:totalEvents,
-        // showTableLoader: showTableLoader,
+        showTableLoader: showTableLoader,
         // setFilterState: setFilterState,
         // filterState: filterState,
         // services: services,
@@ -296,10 +301,10 @@ function DashboardEventsBody() {
         <DashboardHeader title={"Events"} />
         <div className="dash-user-content">
           <div className="d-flex align-items-center total-over-add">
-            <Link to="/admin/listingForm" className="ms-auto add-user-btn">
+            {/* <Link to="/admin/listingForm" className="ms-auto add-user-btn">
               <img src={add} alt="..." />
               Add Events
-            </Link>
+            </Link> */}
           </div>
         </div>
 

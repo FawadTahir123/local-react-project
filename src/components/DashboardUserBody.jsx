@@ -9,7 +9,6 @@ import pen from "../images/pen.png";
 import { Alert } from "antd";
 import { Label } from "reactstrap";
 
-
 export const Globals = createContext();
 export default function DashboardUserBody() {
   const [modalShow, setModalShow] = React.useState(false);
@@ -17,41 +16,40 @@ export default function DashboardUserBody() {
   const [showStatus, setStatusAlert] = useState("");
   const [showMessage, setMessageAlert] = useState("");
   const [userRole, setUserRole] = useState("");
+  const [userGender, setGender] = useState("");
+  const [BloodGroup, setBloodGroup] = useState("");
   const [loader, setLoader] = React.useState(false);
   const [totalPatients, setTotalPatients] = React.useState(0);
   const [totalDonors, setTotalDonors] = React.useState(0);
   const [totalRequests, setTotalRequests] = React.useState(0);
   const [totalEvents, setTotalEvents] = React.useState(0);
   const [allUsers, setAllUsers] = React.useState([]);
-  const [initialpage, setInitialpage] = useState(0)
-  const [showTableLoader , setTableloader] = useState(false)
-  const [filterState, setFilterState] = useState(false)
+  const [initialpage, setInitialpage] = useState(0);
+  const [showTableLoader, setTableloader] = useState(false);
+  const [filterState, setFilterState] = useState(false);
   const [userInput, setUserInput] = useState({
     first_name: "",
     last_name: "",
     email: "",
-    password: "",
-    about: "",
-    role: "",
+    cnic: "",
+    age: "",
+    phone_no: "",
+    address: ""
   });
 
   useEffect(() => {
     CardsData();
     data();
-    setInitialpage(0)
+    setInitialpage(0);
   }, []);
   const CardsData = async () => {
     setLoader(true);
     try {
-      const res = await fetch(
-        `http://127.0.0.1:5000/api/get-cards-data`,
-        {
-          method: "GET",
-        }
-      );
+      const res = await fetch(`http://127.0.0.1:5000/api/get-cards-data`, {
+        method: "GET",
+      });
       const result = await res.json();
       setLoader(false);
-      //setCategoriesList(result);
       setTotalPatients(result.total_patients);
       setTotalDonors(result.total_donors);
       setTotalRequests(result.total_requests);
@@ -72,7 +70,7 @@ export default function DashboardUserBody() {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
   };
   const data = async () => {
-    setTableloader(true)
+    setTableloader(true);
     try {
       const res = await fetch(
         `http://127.0.0.1:5000/api/get-all-user?page=1&limit=10`,
@@ -81,16 +79,15 @@ export default function DashboardUserBody() {
         }
       );
       const result = await res.json();
-      setTableloader(false)
+      setTableloader(false);
       setAllUsers(result);
-
     } catch (err) {
       console.log(err.message);
     }
   };
 
   const data1 = async (page, limit) => {
-    setTableloader(true)
+    setTableloader(true);
     try {
       const res = await fetch(
         `http://127.0.0.1:5000/api/get-all-user?page=${page}&limit=${limit}`,
@@ -99,7 +96,7 @@ export default function DashboardUserBody() {
         }
       );
       const result = await res.json();
-      setTableloader(false)
+      setTableloader(false);
       setAllUsers(result);
     } catch (err) {
       console.log(err.message);
@@ -109,7 +106,6 @@ export default function DashboardUserBody() {
     e.preventDefault();
     console.log("user Input: ", userInput);
     var mailformat = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
-    var passw = /^(?=.*[a-z]).{8,15}$/;
     if (userInput.first_name === "") {
       setMessageAlert("Please enter first name");
       setStatusAlert("error");
@@ -122,19 +118,36 @@ export default function DashboardUserBody() {
       setMessageAlert("Please enter your email address");
       setStatusAlert("error");
       setShowAlert(true);
-    } else if (userInput.password === "") {
-      setMessageAlert("Please set your password");
+    }  else if (userInput.address === "") {
+      setMessageAlert("Please enter your  address");
+      setStatusAlert("error");
+      setShowAlert(true);
+    }else if (userGender === "") {
+      setMessageAlert("Please set your Gender");
       setStatusAlert("error");
       setShowAlert(true);
     } else if (userRole === "") {
       setMessageAlert("Please set User role");
       setStatusAlert("error");
       setShowAlert(true);
+    } else if (userInput.cnic === "") {
+      setMessageAlert("Please enter your CNIC");
+      setStatusAlert("error");
+      setShowAlert(true);
+    } else if (userInput.age === "") {
+      setMessageAlert("Please enter your age");
+      setStatusAlert("error");
+      setShowAlert(true);
+    } else if (BloodGroup === "") {
+      setMessageAlert("Please set Blood Group");
+      setStatusAlert("error");
+      setShowAlert(true);
     } else {
+      console.log(userInput, "userdata");
       if (userInput.email.match(mailformat)) {
-        if (userInput.password.match(passw)) {
+        
           const response = await fetch(
-            "https://test-wrangler.listing.workers.dev/api/add-user",
+            "http://127.0.0.1:5000/api/add-user",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -142,9 +155,14 @@ export default function DashboardUserBody() {
                 first_name: userInput.first_name,
                 last_name: userInput.last_name,
                 email: userInput.email,
-                password: userInput.password,
-                about: userInput.about,
+                age: userInput.age,
+                cnic: userInput.cnic,
+                phone_no : userInput.phone_no,
+                address: userInput.address,
                 user_role: userRole,
+                blood_group: BloodGroup,
+                gender: userGender,
+                account_status : 'OK'
               }),
             }
           );
@@ -174,14 +192,9 @@ export default function DashboardUserBody() {
               role: "",
             });
           }
-        } else {
-          setMessageAlert(
-            "Wrong password Type! Please use characters between 8 and 15 and alteast one numeric digit and special character."
-          );
-          setStatusAlert("error");
-          setShowAlert(true);
-        }
-      } else {
+
+      }
+      else {
         setMessageAlert("You have entered an invalid email address!");
         setStatusAlert("error");
         setShowAlert(true);
@@ -206,8 +219,8 @@ export default function DashboardUserBody() {
         totalRequests: totalRequests,
         totalEvents: totalEvents,
         allUsers: allUsers,
-        setFilterState:setFilterState, 
-        filterState:filterState
+        setFilterState: setFilterState,
+        filterState: filterState,
       }}
     >
       <>
@@ -216,10 +229,10 @@ export default function DashboardUserBody() {
           <div className="dash-user-content">
             <div className="d-flex align-items-center total-over-add">
               {/*  */}
-              {/* <Link onClick={AddUser} className="ms-auto add-user-btn">
+              <Link onClick={AddUser} className="ms-auto add-user-btn">
                 <img src={add} alt="..." />
                 Add User
-              </Link> */}
+              </Link>
             </div>
           </div>
 
@@ -281,26 +294,27 @@ export default function DashboardUserBody() {
 
                     <input
                       type="text"
-                      name="first_name"
-                      value={userInput.first_name}
+                      name="age"
+                      value={userInput.age}
                       onChange={handleInput}
                       className="edit-form-control"
-                      placeholder="First Name"
+                      placeholder="Age"
                     />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="mb-3">
                     <Label className="edit-input-label">Gender*</Label>
-
-                    <input
-                      type="text"
-                      name="last_name"
-                      value={userInput.last_name}
-                      onChange={handleInput}
-                      className="edit-form-control"
-                      placeholder="Last Name"
-                    />
+                    <select
+                      className="edit-form-control padding-rigth-15"
+                      value={userGender}
+                      onChange={(e) => setGender(e.target.value)}
+                    >
+                      <option>Select</option>
+                      <option value={"male"}>Male</option>
+                      <option value={"female"}>Female</option>
+                      <option value={"other"}>Other</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -310,14 +324,18 @@ export default function DashboardUserBody() {
                   <div className="mb-3">
                     <Label className="edit-input-label">Blood Group*</Label>
 
-                    <input
-                      type="text"
-                      name="first_name"
-                      value={userInput.first_name}
-                      onChange={handleInput}
-                      className="edit-form-control"
-                      placeholder="First Name"
-                    />
+                    <select
+                      className="edit-form-control padding-rigth-15"
+                      value={BloodGroup}
+                      onChange={(e) => setBloodGroup(e.target.value)}
+                    >
+                      <option>Select</option>
+                      <option value={"ab+"}>AB+</option>
+                      <option value={"a-"}>A-</option>
+                      <option value={"ab-"}>AB-</option>
+                      <option value={"b+"}>B+</option>
+                      <option value={"a+"}>A+</option>
+                    </select>
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -326,16 +344,15 @@ export default function DashboardUserBody() {
 
                     <input
                       type="text"
-                      name="last_name"
-                      value={userInput.last_name}
+                      name="cnic"
+                      value={userInput.cnic}
                       onChange={handleInput}
                       className="edit-form-control"
-                      placeholder="Last Name"
+                      placeholder="CNIC"
                     />
                   </div>
                 </div>
               </div>
-
 
               <div className="row">
                 <div className="col-md-6">
@@ -344,11 +361,11 @@ export default function DashboardUserBody() {
 
                     <input
                       type="text"
-                      name="first_name"
-                      value={userInput.first_name}
+                      name="phone_no"
+                      value={userInput.phone_no}
                       onChange={handleInput}
                       className="edit-form-control"
-                      placeholder="First Name"
+                      placeholder="Phone No."
                     />
                   </div>
                 </div>
@@ -358,31 +375,18 @@ export default function DashboardUserBody() {
 
                     <input
                       type="email"
-                      name="last_name"
-                      value={userInput.last_name}
+                      name="email"
+                      value={userInput.email}
                       onChange={handleInput}
                       className="edit-form-control"
-                      placeholder="Last Name"
+                      placeholder="Email"
                     />
                   </div>
                 </div>
               </div>
 
-
               <div className="row">
-                <div className="col-md-6">
-                  <div className="mb-3">
-                    <Label className="edit-input-label">Password*</Label>
-                    <input
-                      type="password"
-                      name="email"
-                      onChange={handleInput}
-                      value={userInput.email}
-                      className="edit-form-control"
-                      placeholder="password"
-                    />
-                  </div>
-                </div>
+                <div className="col-md-6"></div>
               </div>
               <div className="mb-3">
                 <Label className="edit-input-label">Role*</Label>
@@ -393,23 +397,21 @@ export default function DashboardUserBody() {
                 >
                   <option>Select</option>
                   <option value={1}>Admin</option>
-                  <option value={2}>User</option>
-                  <option value={3}>Member</option>
+                  <option value={2}>Patient</option>
                 </select>
               </div>
-              {/* <div className="mb-3">
-                <Label className="edit-input-label">About</Label>
-                <textarea
-                  type="about"
-                  name="about"
-                  value={userInput.about}
-                  onChange={handleInput}
-                  className="about-input"
-                  placeholder="About"
-                  rows={8}
-                  cols={40}
-                />
-              </div> */}
+              <div className="mb-3">
+              <Label className="edit-input-label">Address*</Label>
+
+                  <input
+                    type="text"
+                    name="address"
+                    value={userInput.address}
+                    onChange={handleInput}
+                    className="edit-form-control"
+                    placeholder="Address"
+                  />
+              </div>
               {showAlert ? (
                 <Alert message={showMessage} type={showStatus} />
               ) : (
@@ -419,7 +421,10 @@ export default function DashboardUserBody() {
                 <div className="col-md-6">
                   <button
                     className="bg-white-cusd"
-                    onClick={(e) => {e.preventDefault();setModalShow(false)}}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setModalShow(false);
+                    }}
                   >
                     Close
                   </button>

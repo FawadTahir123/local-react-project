@@ -117,7 +117,7 @@ function AvailabiltyCheck() {
       <Header/>
       <div className="container" style={divStyle}>
         <div style={{ textAlign: "center" }}>
-          <h1 style={{ marginTop: "20px", color:'#fff',fontWeight: "bold" }}>Set Your Availability</h1>
+          <h1 style={{ marginTop: "20px", color:'#fff',fontWeight: "bold" }}>let us know when you are available</h1>
         </div>
         <div style={buttonStyle}>
           <Button style={{ color: "white", background: "#ff5348" }}>

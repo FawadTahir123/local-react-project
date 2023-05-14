@@ -6,12 +6,12 @@ import Graytrash from "../images/graytrash.png";
 import Modal from "react-bootstrap/Modal";
 import { Label } from "reactstrap";
 import { Alert } from "antd";
-// import { ListingGlobals } from "./DashboardListingBody";
+import { EventsGlobals } from "./DashboardEventsBody";
 // import Pagination from "./Paginaton";
 import Button from "@mui/material/Button";
 import Search from "./GuiFilter";
-import UserSorting from "./UserSorting";
-// import { CircularProgress } from "@mui/material";
+
+import { CircularProgress } from "@mui/material";
 // import Places from "../pages/places";
 // import { MapGlobals } from "../App";
 import { useNavigate } from "react-router-dom";
@@ -21,25 +21,27 @@ function EventsTable() {
   
   const [showAlert, setShowAlert] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
-//   const {
-//     data,
-//     alllisting,
-//     CardsData,
-//     data1,
-//     initialpage,
-//     setInitialpage,
-//     setAllListing,
-//     showTableLoader,
-//     setTableloader,
-//     filterState,
-//     setFilterState,
-//     services,
-//   } = useContext(ListingGlobals);
+  const {
+    data,
+    alllisting,
+    CardsData,
+    data1,
+    initialpage,
+    setInitialpage,
+    setAllListing,
+    showTableLoader,
+    allDonorEvents: allDonorEvents,
+    allPatientEvents: allPatientEvents,
+    setTableloader,
+    filterState,
+    setFilterState,
+    services,
+  } = useContext(EventsGlobals);
 //   const {location, setLocation, selectedLocation, setSelectedLocation, editListingId, setEditListingId, setServices} = useContext(MapGlobals);
 //   const [deleteUserId, setDeleteUserId] = useState("");
 //   const [items, setItems] = useState([]);
 //   const [query, setQuery] = React.useState("");
-//   const [isChecked, setisChecked] = useState([]);
+  const [isChecked, setisChecked] = useState([]);
 //   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 //   const [showDeleteStatus, setDeleteStatusAlert] = useState(false);
 //   const [showDeleteMessage, setDeleteMessageAlert] = useState("");
@@ -100,14 +102,14 @@ function EventsTable() {
 //     }
 //   };
 
-//   const handelCheckbox = (e) => {
-//     const { value, checked } = e.target;
-//     if (checked) {
-//       setisChecked([...isChecked, value], value);
-//     } else {
-//       setisChecked(isChecked.filter((e) => e !== value));
-//     }
-//   };
+  const handelCheckbox = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setisChecked([...isChecked, value], value);
+    } else {
+      setisChecked(isChecked.filter((e) => e !== value));
+    }
+  };
 
 //   const allDelete = async () => {
 //     const response = await fetch(
@@ -139,17 +141,7 @@ function EventsTable() {
   return (
     <>
       <div className="d-flex del-search">
-        {
-          <Button
-            className="deleteButton"
-            // disabled={isChecked.length > 0 ? false : true}
-            variant="contained"
-            color="error"
-            // onClick={allDelete}
-          >
-            Delete
-          </Button>
-        }
+        
         {/* {showDeleteAlert ? (
           <Alert message={showDeleteMessage} type="error" />
         ) : (
@@ -176,192 +168,113 @@ function EventsTable() {
             <tr>
               <th>#</th>
               <th>
-                <UserSorting
-                  name="Name"
-                  col="name"
-                //   url="https://test-wrangler.listing.workers.dev/api/order-by-listing?page=1&limit=10"
-                //   setFunction={setAllListing}
-                //   setsorting={setsorting}
-                //   sorting={sorting}
-                />
+                Patient Name
               </th>
               <th>
-                <UserSorting
-                  name="Category"
-                //   col="sub_cat_id"
-                //   url="https://test-wrangler.listing.workers.dev/api/order-by-listing?page=1&limit=10"
-                //   setFunction={setAllListing}
-                //   setsorting={setsorting}
-                //   sorting={sorting}
-
-                />
+                Donor Name
               </th>
               <th>
-                <UserSorting
-                  name="Menu"
-                //   col="menu_type"
-                //   url="https://test-wrangler.listing.workers.dev/api/order-by-listing?page=1&limit=10"
-                //   setFunction={setAllListing}
-                //   setsorting={setsorting}
-                //   sorting={sorting}
-
-                />
+                Blood Group
               </th>
               <th>
-                <UserSorting
-                  name="Services"
-                //   col="services"
-                //   url="https://test-wrangler.listing.workers.dev/api/order-by-listing?page=1&limit=10"
-                //   setFunction={setAllListing}
-                //   setsorting={setsorting}
-                //   sorting={sorting}
-
-                />
+                Donation Period
               </th>
               <th>
-                <UserSorting
-                  name="Rating"
-                //   col="rating"
-                //   url="https://test-wrangler.listing.workers.dev/api/order-by-listing?page=1&limit=10"
-                //   setFunction={setAllListing}
-                //   setsorting={setsorting}
-                //   sorting={sorting}
-
-                />
+               Event Status
               </th>
               <th>
-                <UserSorting
-                  name="Location"
-                //   col="location"
-                //   url="https://test-wrangler.listing.workers.dev/api/order-by-listing?page=1&limit=10"
-                //   setFunction={setAllListing}
-                //   setsorting={setsorting}
-                //   sorting={sorting}
-
-                />
+               Change Event Status
               </th>
-              <th>
-                <UserSorting
-                  name="Image"
-                //   col="image_path"
-                //   url="https://test-wrangler.listing.workers.dev/api/order-by-listing?page=1&limit=10"
-                //   setFunction={setAllListing}
-                //   setsorting={setsorting}
-                //   sorting={sorting}
-
-                />
-              </th>
-              <th>
-                <UserSorting
-                  name="Timing"
-                //   col="timing"
-                //   url="https://test-wrangler.listing.workers.dev/api/order-by-listing?page=1&limit=10"
-                //   setFunction={setAllListing}
-                //   setsorting={setsorting}
-                //   sorting={sorting}
-                />
-              </th>
-              {/* <th>URL</th> */}
-              <th>Action</th>
-              {/* <th>Action</th> */}
             </tr>
           </thead>
-          {/* {showTableLoader === false ? (
+          {showTableLoader === false ? (
             <tbody>
-              {tableData?.map((listing) => {
-                console.log(listing,"listing",listing?.isChecked,"isChecked");
-                return (
-                  <tr key={listing.listing_id}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        value={listing.listing_id}
-                        checked={listing.isChecked}
-                        onChange={(e) => handelCheckbox(e)}
-                      />
-                    </td>
-                    <td>
-                      <div className="d-flex company-cell">
-                        <input
-                          type={"hidden"}
-                          value={listing.listing_id}
-                          classNameName="hidden-user-id"
-                        />
-                        <span>{listing.listing_name}</span>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="customer-cell">
-                        {listing.sub_cat_name}
-                      </span>
-                    </td>
-                    <td>{listing.menu_type}</td>
-                    <td>
-                      <span maxlength="30">{
-                        services?.map(val => {
-                          if(val.listing_id === listing.listing_id){
-                            return <span style={{padding:"-2px", backgroundColor:"#dcffe0", borderRadius:'10px', color:'#23802e' , justifyContent:'space-between', marginTop:'10px'}}>{val.label}</span>
-                          }
-                        })
-                      }</span>
-                    </td>
-                    <td>{listing.rating}</td>
-                    <td>{listing.location}</td>
-                    <td>{listing.image_path}</td>
-                    <td>{listing.timing}</td>
-                    <td>{listing.url}</td>
-                    <td><textarea
-                value={listing.description}
-                className="about-input"
-                placeholder="About"
-                rows={8}
-                cols={80}
-                /></td>
-                    <td>
-                      {isChecked.length > 0 ? (
-                        <span className="quick-act-ico d-flex">
-                          <img
-                            style={{ cursor: "pointer" }}
-                            src={Graypen}
-                            alt="..."
-                            width="24"
+              {allDonorEvents.map((donorEvent) => {
+                return(
+                allPatientEvents.map((patientEvent)=>{
+               
+                  if(donorEvent.id === patientEvent.id){
+                    return (
+                      <tr key={donorEvent.id}>
+                        <td>
+                          <input
+                            type="checkbox"
+                            value={donorEvent.id}
+                            checked={donorEvent.isChecked}
+                            onChange={(e) => handelCheckbox(e)}
                           />
-                          <img
-                            style={{ cursor: "pointer" }}
-                            src={Graytrash}
-                            alt="..."
-                            width="24"
-                            className="ms-2"
-                          />
-                        </span>
-                      ) : (
-                        <span className="quick-act-ico d-flex">
-                          <img
-                            onClick={() => {
-                               Navigate(`/admin/editListing/${listing.listing_id}`)
+                        </td>
+                        <td>
+                          <div className="d-flex company-cell">
+                            <input
+                              type={"hidden"}
+                              value={donorEvent.id}
+                              classNameName="hidden-user-id"
+                            />
+                            <span>{patientEvent.first_name} {patientEvent.last_name}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <span className="customer-cell">
+                            {donorEvent.first_name} {donorEvent.last_name}
+                          </span>
+                        </td>
+                        <td>{donorEvent.blood_group}</td>
+                        <td>{donorEvent.donation_date}</td>
+                        <td>{donorEvent.status}</td>
+                       
+        
+                        <td><button className="btn-nav-addlisting">Complete</button></td>
+                        {/* <td>
+                          {isChecked.length > 0 ? (
+                            <span className="quick-act-ico d-flex">
+                              <img
+                                style={{ cursor: "pointer" }}
+                                src={Graypen}
+                                alt="..."
+                                width="24"
+                              />
+                              <img
+                                style={{ cursor: "pointer" }}
+                                src={Graytrash}
+                                alt="..."
+                                width="24"
+                                className="ms-2"
+                              />
+                            </span>
+                          ) : (
+                            <span className="quick-act-ico d-flex">
+                              <img
+                                // onClick={() => {
+                                //    Navigate(`/admin/editListing/${listing.listing_id}`)
+    
+                                // }}
+                                style={{ cursor: "pointer" }}
+                                src={pen}
+                                alt="..."
+                                width="24"
+                              />
+                              <img
+                                // onClick={() => {
+                                //   return ShowDeleteModal(listing.listing_id);
+                                // }}
+                                style={{ cursor: "pointer" }}
+                                src={trash}
+                                alt="..."
+                                width="24"
+                                className="ms-2"
+                              />
+                            </span>
+                          )}
+                        </td> */}
+                      </tr>
+                    );
 
-                            }}
-                            style={{ cursor: "pointer" }}
-                            src={pen}
-                            alt="..."
-                            width="24"
-                          />
-                          <img
-                            onClick={() => {
-                              return ShowDeleteModal(listing.listing_id);
-                            }}
-                            style={{ cursor: "pointer" }}
-                            src={trash}
-                            alt="..."
-                            width="24"
-                            className="ms-2"
-                          />
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
+
+                  }
+
+                  })
+              )})}
             </tbody>
           ) : (
             <td colspan="10" style={{ padding: "10px" }}>
@@ -371,7 +284,7 @@ function EventsTable() {
                 />
               </center>
             </td>
-          )} */}
+          )}
         </table>
 
 
@@ -435,5 +348,6 @@ function EventsTable() {
     </>
   );
 }
+
 
 export default EventsTable;

@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { BASE_URL } from '../utils'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState , useEffect} from 'react'
+import { useNavigate } from 'react-router-dom'
 import Header from "../components/Navbar";
-import { message, Spin, Button, Checkbox, Form, Input, Card, } from 'antd'
-import {LockOutlined, LoginOutlined, UserOutlined} from "@ant-design/icons";
+import { message, Spin, Button,  Form, Input, Card,notification  } from 'antd'
+import {LockOutlined, LoginOutlined, UserOutlined, SmileOutlined} from "@ant-design/icons";
 import { Alert } from 'antd';
 
 
@@ -15,13 +13,32 @@ const Login = ({url}) => {
     const [showAlert, setShowAlert]= useState(false);
     const [showStatus, setStatusAlert]= useState('');
     const [showMessage, setMessageAlert]= useState('');
+    const [notifications, setNotifications] = useState([]);
+    // const [messageApi, contextHolder] = message.useMessage();
+  const [api, contextHolder] = notification.useNotification();
+// const success = () => {
+//     console.log("hello");
+//     messageApi.open({
+//       type: 'success',
+//       content: 'This is a prompt message for success, and it will disappear in 10 seconds',
+//       duration: 10,
+//     });
+//   };
 
+
+  const openNotification = () => {
+    console.log("hello");
+    api.info({
+      message: "hello",
+      description:
+        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+    placement:'bottom',
+      duration: 3,
+    });
+  };
 
     const onFinish = async (values) => {
-        // setLoading(true);
-        // console.log(values, "login-value");
-
-
+        setLoading(true);
         const response = await fetch('http://127.0.0.1:5000/auth/login',{
             method:"POST",
             headers: {'Content-Type':'application/json'},
@@ -47,6 +64,7 @@ const Login = ({url}) => {
                 localStorage.setItem("lastname", data.data[0].last_name);
                 localStorage.setItem("user_role", data.data[0].user_role);
                 localStorage.setItem("id", data.data[0].id);
+                localStorage.setItem("account_status", data.data[0].account_status);
                 console.log(data.msg);
                 if(data.data[0].user_role == "1"){
                     setMessageAlert(data.msg);
@@ -54,10 +72,11 @@ const Login = ({url}) => {
                     setShowAlert(true);
                     navigate(url)
                 }else{
-
-                    setMessageAlert(data.msg);
-                    setStatusAlert("error");
-                    setShowAlert(true);
+                    
+                    // setMessageAlert(data.msg);
+                    // setStatusAlert("error");
+                    // setShowAlert(true);
+                    // success();
                     navigate('/');
                 }
 
@@ -77,9 +96,19 @@ const Login = ({url}) => {
         marginLeft: '37%'
     };
 
-    return (
+    useEffect(() => {
+        return () => {
+          notifications.forEach((notification) => {
+            notification.close();
+          });
+        };
+      }, [notifications]);
+
+    return (<>
+        {contextHolder}
         <body className="sign-up-body">
             <Header/>
+            
         <div style={divStyle}>
 
             <Card
@@ -132,7 +161,7 @@ const Login = ({url}) => {
                         >
                             {showAlert? <Alert message={showMessage} type={showStatus} />: <div></div>}
 
-                            <Button style={{marginTop: "15px"}} type="primary" htmlType="submit" className="MainButtons" block icon={<LoginOutlined/>}>
+                            <Button style={{marginTop: "15px"}} type="primary" htmlType="submit" className="MainButtons" onClick={openNotification} block icon={<LoginOutlined/>}>
                                 Log In
                             </Button>
 
@@ -142,6 +171,7 @@ const Login = ({url}) => {
             </Card>
         </div>
         </body>
+        </>
     );
 }
 

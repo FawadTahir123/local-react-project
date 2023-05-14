@@ -12,7 +12,6 @@ import Button from "@mui/material/Button";
 import Pagination from "./Paginaton";
 import { CircularProgress } from "@mui/material";
 import {EyeFilled}  from '@ant-design/icons';
-// import UserSorting from "./UserSorting";
 export default function UserTable() {
   const [modalShow, setModalShow] = React.useState(false);
   const [viewmodalShow, setviewModalShow] = React.useState(false);
@@ -57,12 +56,11 @@ export default function UserTable() {
           method: "GET",
         }
       );
-      data();
       const result = await res.json();
       setEditUser(result.data[0]);
       setUserRole(result.data[0].user_role);
       setBloodGroup(result.data[0].blood_group)
-      setUserStatus(result.data[0].status)
+      setUserStatus(result.data[0].account_status)
     } catch (e) {
       console.log("error", e);
     }
@@ -150,18 +148,17 @@ export default function UserTable() {
               last_name: editUser.last_name,
               cnic: editUser.cnic,
               password: editUser.password ? editUser.password : "",
-              password: editUser.password ? editUser.password : "",
               user_role: userRole,
               age: editUser.age,
               address: editUser.address,
               gender: editUser.gender,
               blood_group: bloodgroup,
               phone_no: editUser.phone_no,
-              status: prefrence ? prefrence : "",
+              availability: editUser.availability,
+              account_status : userStatus ? userStatus : "", 
             }),
           }
-        );
-        // console.log(editUser.firstname,"first  ", editUser.last_name, "last  ", userRole, "Role", bloodgroup, "blood");
+        )
         data();
         const result = await res.json();
         console.log(result);
@@ -234,25 +231,15 @@ export default function UserTable() {
     setShowDeleteAlert(false);
   }, 7000);
 
-  const orderBy = async (column, order) => {
-    try {
-      const response = await fetch(
-        "https://test-wrangler.listing.workers.dev/api/order-by-user?page=1&limit=10",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            column: column,
-            order: order,
-          }),
-        }
-      );
-      const data = await response.json();
-      setAllUsers(data);
-    } catch (e) {
-      console.log(e);
+const setUserRoleforTable  = (user) =>{
+    if(user === 1){
+      return 'Admin'
+    }else if(user === 2){
+      return "Patient"
+    }else{
+      return "Donor"
     }
-  };
+}
 
   return (
     <>
@@ -290,16 +277,19 @@ export default function UserTable() {
             <tr>
               <th>#</th>
               <th>
-             Name
+            Name
               </th>
               <th>
-              CNIC
+            CNIC
               </th>
               <th>
-            Phone Number
+            Role
               </th>
               <th>
             Blood Group
+              </th>
+              <th>
+            Account Status
               </th>
               <th>Quick Action</th>
             </tr>
@@ -332,9 +322,12 @@ export default function UserTable() {
                     <td>
                       <span className=" customer-cell ">{user.cnic}</span>
                     </td>
-                    <td>{user.phone_no}</td>
+                    <td>{setUserRoleforTable(user.user_role)}</td>
                     <td>
                       <span maxlength="30">{user.blood_group}</span>
+                    </td>
+                    <td>
+                      <span>{user.account_status}</span>
                     </td>
                     <td>
                     <span className="quick-act-ico d-flex">
@@ -547,14 +540,18 @@ export default function UserTable() {
                 </div>
                 <div className="col-md-6">
                   <div className="mb-3">
-                    <Label className="edit-input-label">Password</Label>
+                    <Label className="edit-input-label">Availablity</Label>
+                    <span className="edit-from-control-msg">
+                        (Availability is not editable)
+                      </span>
                     <input
-                      type="password"
-                      name="password"
+                      type="text"
+                      name="availability"
                       onChange={handleInput}
-                      value={editUser.password}
+                      value={editUser.availability}
                       className="edit-form-control"
-                      placeholder="Password"
+                      placeholder="Availability"
+                      disabled
                     />
                   </div>
                 </div>
@@ -575,15 +572,15 @@ export default function UserTable() {
               {
                 userRole == '3' ? 
                 <div className="mb-3">
-                <Label className="edit-input-label">Prefrence</Label>
+                <Label className="edit-input-label">Account Status</Label>
                 <select
                   className="edit-form-control padding-rigth-15"
                   value={userStatus}
-                  onChange={(e) => setPrefrence(e.target.value)}
+                  onChange={(e) => setUserStatus(e.target.value)}
                 >
                   <option>Select</option>
-                  <option value={"adopt_a_child"}>Adopt a Child</option>
-                  <option value={"one_time"}>One Time</option>
+                  <option value={"HOLD"}>HOLD</option>
+                  <option value={"OK"}>OK</option>
                 </select>
               </div> : ""
 

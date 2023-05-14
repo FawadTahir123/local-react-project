@@ -291,11 +291,12 @@ function RequestsTable() {
 
               </th>
               <th>
-                Action
+               Remaining Units
               </th>
               <th>
-                Action on Req.
+                Action
               </th>
+              
             </tr>
           </thead>
           {showTableLoader === false ? (
@@ -330,6 +331,7 @@ function RequestsTable() {
                     <td>{request.required_date}</td>
                     <td>{request.status}</td>
                     <td>{request.unit}</td>
+                    <td>{request.remaning_unit}</td>
                     <td>
                       {isChecked.length > 0 ? (
                         <span className="quick-act-ico d-flex">
@@ -368,9 +370,6 @@ function RequestsTable() {
                           />
                         </span>
                       )}
-                    </td>
-                    <td>
-                      <button className="btn-nav-login" onClick={(e) => changeRequestStatus(request.id)}>Approved</button>
                     </td>
                   </tr>
                 );
