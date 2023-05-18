@@ -12,6 +12,8 @@ function AvailabiltyCheck() {
   const [open, setOpen] = useState(false);
   const [patient, setPatient] = useState([]);
   const [isBoxChecked, setisChecked] = useState(null);
+  const [patientID, setPatientId] = useState('')
+  const [donationDate, setDonationDate] = useState('')
 
 
   // const getAvailability = async () => {
@@ -54,7 +56,6 @@ function AvailabiltyCheck() {
   const onChange = async (checked) => {
     if (checked) {
       try {
-        setChecked('')
         setChecked(true);
         const res = await fetch(
           `http://127.0.0.1:5000/api/patient-request-for-donor`,
@@ -96,7 +97,8 @@ function AvailabiltyCheck() {
           }
         );
         const result = await res.json();
-          console.log(result.data);
+        setPatientId(result.data[0].patient_id)
+        setDonationDate(result.data[0].required_date)
       } catch (e) {
         console.log("error", e);
       }
@@ -106,7 +108,29 @@ function AvailabiltyCheck() {
     
   };
 
-console.log(isBoxChecked, "ischecked");
+
+  const submitHandle = async(e) => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/api/add-event`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            patient_id: patientID,
+            donor_id: userID,
+            donation_date : donationDate,
+            requestID : isBoxChecked
+        }),
+        }
+      );
+      const result = await res.json();
+    } catch (e) {
+      console.log("error", e);
+    }
+    
+  };
+
   const divStyle = {
     margin: "auto",
     width: "50%",
@@ -116,7 +140,6 @@ console.log(isBoxChecked, "ischecked");
   };
   const divStyleforSwitch = {
     margin: "auto",
-    width: "50%",
     padding: "10px",
     marginTop: "100px",
     justifyContent: "space-between",
@@ -173,7 +196,13 @@ console.log(isBoxChecked, "ischecked");
         
         }
         footer={
-          <Button style={{width:'100%', justifyContent:'center'}}>Submit</Button>
+          
+          <div  disabled className="btn" style={{width:'100%', textAlign:'center', border:'none !important', color:'#fff'} } onClick={submitHandle} >Submit</div>
+        }
+        footerStyle={
+          {
+            backgroundColor:"#ff5348"
+          }
         }
       >
         {patient.map((patientData) => {
