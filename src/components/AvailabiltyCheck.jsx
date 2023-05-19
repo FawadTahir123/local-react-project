@@ -11,7 +11,7 @@ function AvailabiltyCheck() {
   const [disable, setDisable] = useState(false);
   const [open, setOpen] = useState(false);
   const [patient, setPatient] = useState([]);
-  const [isBoxChecked, setisChecked] = useState(null);
+  const [isBoxChecked, setisChecked] = useState('');
   const [patientID, setPatientId] = useState('')
   const [donationDate, setDonationDate] = useState('')
 
@@ -181,33 +181,30 @@ function AvailabiltyCheck() {
         </div>
       </div>
       <Drawer
-        title="Patient Available"
+        title="Available Patients"
         placement="right"
         width={500}
         onClose={onClose}
         open={open}
-        extra={
-          <Space>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button type="primary" onClick={onClose}>
-              OK
-            </Button>
-          </Space>
-        
-        }
         footer={
-          
-          <div  disabled className="btn" style={{width:'100%', textAlign:'center', border:'none !important', color:'#fff'} } onClick={submitHandle} >Submit</div>
+          isBoxChecked ? 
+          <div   className="btn" style={{width:'100%', textAlign:'center', border:'none !important', color:'#fff'} } onClick={submitHandle} >Submit</div>:
+          <div   className="btn" style={{width:'100%', textAlign:'center', border:'none !important', color:'#fff', background:'gray'} } >Submit</div>
         }
         footerStyle={
+          isBoxChecked ? 
           {
-            backgroundColor:"#ff5348"
+            backgroundColor:"#ff5348",
+            padding:'inherit'
+          } : {
+            padding:'inherit',
+            backgroundColor:"gray"
           }
         }
       >
         {patient.map((patientData) => {
           return (
-            <div className="d-flex" style={{ justifyContent: "space-evenly" }}>
+            <div className="drawer-cards d-flex" style={{ justifyContent: "space-evenly", background:'#ffe8e7' }}>
               <input
                 type="checkbox"
                 value={patientData.id}
@@ -219,11 +216,14 @@ function AvailabiltyCheck() {
                 bordered={true}
                 style={{
                   width: 300,
+                  border: '#ff7f7fd9 1px solid', 
+                  background:'#ffe8e7',
+                  margin:'20px'
                 }}
               >
-                <p>{patientData.blood_group}</p>
-                <p>{patientData.required_date}</p>
-                <p>Card content</p>
+                <p><b>Blood Group :</b>   {patientData.blood_group}</p>
+                <p><b>Required Date :  </b>  {patientData.required_date}</p>
+                <p><b>Units Required : </b> {patientData.unit}</p>
               </Card>
             </div>
           );

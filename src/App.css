@@ -2581,3 +2581,18 @@ border-radius: 10px;
   background-size: 100% 100%;
   
 }
+
+.drawer-cards{
+  margin: 20px;
+  border: #ff7f7fd9 3px solid;
+  border-radius: 20px;
+}
+.ant-card-head-title{
+  text-align: center;
+  font-weight: bold;
+}
+.ant-drawer-title{
+  text-align: center;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+}

@@ -5,7 +5,7 @@ import add from "../images/add.png";
 import pen from "../images/pen.png";
 import Modal from "react-bootstrap/Modal";
 import { Label } from "reactstrap";
-import { Alert } from "antd";
+import { Alert ,notification} from "antd";
 import DashboardRequestsCards from "./DashboardRequestsCards";
 import RequestsTable from "./RequestsTable";
 
@@ -32,11 +32,21 @@ function DashboardRequestsBody() {
   const [showTableLoader, setTableloader] = useState(false);
   const [filterState, setFilterState] = useState(false);
   const [BloodGroup, setBloodGroup] = useState("");
+  const [api, contextHolder] = notification.useNotification();
 
   const [requestData, setRequest] = useState({
     units: "",
     required_date: "",
   });
+
+  const openNotification = (placement) => {
+    api.success({
+      message: `Notification ${placement}`,
+      description:
+        'Request Add successfully',
+      placement,
+    });
+  };
 
   useEffect(() => {
     data();
@@ -150,6 +160,7 @@ function DashboardRequestsBody() {
             }),
           }
         );
+        openNotification('top')
         const result = await res.json();
         CardsData();
         data();
@@ -194,6 +205,7 @@ console.log(patientsData);
         // services: services,
       }}
     >
+      {contextHolder}
       <div className="dash-body">
         <DashboardHeader title={"Requests"} />
         <div className="dash-user-content">
