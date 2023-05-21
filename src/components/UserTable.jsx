@@ -42,11 +42,22 @@ export default function UserTable() {
     setTableloader,
     setAllUsers,
     setFilterState, 
-    filterState
+    filterState,
+    openNotification,
+    api,
+    contextHolder
   } = useContext(Globals);
   const [deleteUserId, setDeleteUserId] = useState("");
   const [items, setItems] = useState([]);
   const [isChecked, setisChecked] = useState([]);
+
+  const delelteNotification = (placement, message,description) => {
+    api.error({
+      message,
+      description,      
+      placement,
+    });
+  };
 
   const getEditData = async (user) => {
     try {
@@ -96,22 +107,25 @@ export default function UserTable() {
   }
   setviewModalShow(true);
  }
-  const deleteUser = async () => {
-    try {
-      const res = await fetch(
-        `http://127.0.0.1:5000/api/delete-user/${deleteUserId}`,
-        {
-          method: "DELETE",
+ const deleteUser = async (e) => {
+   e.preventDefault()
+   setDeleteModalShow(false)
+   
+   try {
+     const res = await fetch(
+       `http://127.0.0.1:5000/api/delete-user/${deleteUserId}`,
+       {
+         method: "DELETE",
         }
-      );
-      const result = await res.json();
-      console.log(result);
-      if (result.status === true) {
-        CardsData();
-        setMessageAlert(result.msg);
-        setStatusAlert("success");
-        setShowAlert(true);
-        data();
+        );
+        const result = await res.json();
+        if (result.status === 2) {
+          data();
+          CardsData();
+          delelteNotification('top','DELETE user', 'User Delete Successfully')
+          setMessageAlert(result.msg);
+          setStatusAlert("success");
+          setShowAlert(true);
       } else {
         setMessageAlert(result.msg);
         setStatusAlert("error");
@@ -161,9 +175,9 @@ export default function UserTable() {
         )
         data();
         const result = await res.json();
-        console.log(result);
         setMessageAlert("User updated successfully");
         setStatusAlert("success");
+        openNotification('top', 'SUCCESS', 'User Edit Successfully')
         setShowAlert(true);
         setModalShow(false);
         setShowAlert(false);
@@ -223,6 +237,7 @@ export default function UserTable() {
     setShowDeleteAlert(true);
     setDeleteMessageAlert(result.msg);
     setDeleteStatusAlert(result.status);
+    delelteNotification('top','DELETE User', "Users Deleted Successfully")
     data();
     CardsData();
     setisChecked([]);
@@ -835,6 +850,7 @@ const setUserRoleforTable  = (user) =>{
                   <button
                     className="bg-white-cusd"
                     onClick={(e) => { e.preventDefault();
+
                       setDeleteModalShow(false)}}
                   >
                     Close

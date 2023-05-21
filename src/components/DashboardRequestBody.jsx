@@ -39,11 +39,10 @@ function DashboardRequestsBody() {
     required_date: "",
   });
 
-  const openNotification = (placement) => {
+  const openNotification = (placement, message, description) => {
     api.success({
-      message: `Notification ${placement}`,
-      description:
-        'Request Add successfully',
+      message,
+      description,
       placement,
     });
   };
@@ -160,7 +159,7 @@ function DashboardRequestsBody() {
             }),
           }
         );
-        openNotification('top')
+        openNotification('top', 'SUCCESS', 'User add Successfully')
         const result = await res.json();
         CardsData();
         data();
@@ -198,7 +197,9 @@ console.log(patientsData);
         totalDonors:totalDonors,
         totalRequests: totalRequests,
         totalEvents:totalEvents,
-        
+        api:api,
+        contextHolder:contextHolder,
+        openNotification:openNotification,
         showTableLoader: showTableLoader,
         setFilterState: setFilterState,
         filterState: filterState,

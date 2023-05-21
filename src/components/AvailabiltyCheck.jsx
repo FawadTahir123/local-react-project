@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Home";
-import { Switch, Card, Button, Drawer, Space } from "antd";
+import { Switch, Card, Button, Drawer, Space , notification} from "antd";
 import { Link } from "react-router-dom";
 import Header from "../components/Navbar";
 
@@ -14,7 +14,15 @@ function AvailabiltyCheck() {
   const [isBoxChecked, setisChecked] = useState('');
   const [patientID, setPatientId] = useState('')
   const [donationDate, setDonationDate] = useState('')
+  const [api, contextHolder] = notification.useNotification();
 
+  const openNotification = (placement, message, description) => {
+    api.success({
+      message,
+      description,
+      placement,
+    });
+  };
 
   // const getAvailability = async () => {
   //   try {
@@ -125,6 +133,8 @@ function AvailabiltyCheck() {
         }
       );
       const result = await res.json();
+      onClose()
+      openNotification('top', "SUCCESS", `Thanks for Donating Blood. You can Donate blood on ${donationDate}`)
     } catch (e) {
       console.log("error", e);
     }
@@ -158,7 +168,9 @@ function AvailabiltyCheck() {
   }, []);
 
   return (
+    
     <body className="check-event">
+      {contextHolder}
       <Header />
       <div className="container" style={divStyle}>
         <div style={{ textAlign: "center" }}>
@@ -189,7 +201,7 @@ function AvailabiltyCheck() {
         footer={
           isBoxChecked ? 
           <div   className="btn" style={{width:'100%', textAlign:'center', border:'none !important', color:'#fff'} } onClick={submitHandle} >Submit</div>:
-          <div   className="btn" style={{width:'100%', textAlign:'center', border:'none !important', color:'#fff', background:'gray'} } >Submit</div>
+          <div disabled  className="btn" style={{width:'100%', textAlign:'center', border:'none !important', color:'#fff', background:'gray'} } >Submit</div>
         }
         footerStyle={
           isBoxChecked ? 

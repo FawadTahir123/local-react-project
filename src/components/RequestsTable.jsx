@@ -30,6 +30,9 @@ function RequestsTable() {
     setTableloader,
     filterState,
     setFilterState,
+    api,
+    contextHolder,
+    openNotification
     // services,
   } = useContext(RequestsGlobals);
   // const {location, setLocation, selectedLocation, setSelectedLocation, editListingId, setEditListingId, setServices} = useContext(MapGlobals);
@@ -52,6 +55,14 @@ function RequestsTable() {
 
   const Navigate= useNavigate()
 
+  const deleteNotification = (placement, message, description) => {
+    api.error({
+      message,
+      description,
+      placement,
+    });
+  };
+
   const changeRequestStatus = async (id) => {
     try {
       const res = await fetch(
@@ -68,11 +79,8 @@ function RequestsTable() {
       data();
       const result = await res.json();
       console.log(result);
-      // setEditRequest(result.data[0]);
-      // setRequestStatus(result.data[0].status)
-      // setBloodGroup(result.data[0].blood_group)
+   
 
-      // console.log(result.data[0].status, "result");
     } catch (e) {
       console.log("error", e);
     }
@@ -92,8 +100,6 @@ function RequestsTable() {
       setEditRequest(result.data[0]);
       setRequestStatus(result.data[0].status)
       setBloodGroup(result.data[0].blood_group)
-
-      // console.log(result.data[0].status, "result");
     } catch (e) {
       console.log("error", e);
     }
@@ -102,43 +108,50 @@ function RequestsTable() {
 
 
   const UpdateRequest = async (e) => {
-    // e.preventDefault();
-    // if (editRequest.first_name === "") {
-    //   setMessageAlert("Please enter first name");
-    //   setStatusAlert("error");
-    //   setShowAlert(true);
-    // } else if (editRequest.last_name === "") {
-    //   setMessageAlert("Please enter last name");
-    //   setStatusAlert("error");
-    //   setShowAlert(true);
-    // } else {
-    //   try {
-    //     const res = await fetch(
-    //       `http://127.0.0.1:5000/api/edit-user/${editUser.id}`,
-    //       {
-    //         method: "PUT",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({
-    //           first_name: editRequest.first_name,
-    //           last_name: editRequest.last_name,
+    e.preventDefault();
+    if (editRequest.unit === "") {
+      setMessageAlert("Please enter Units");
+      setStatusAlert("error");
+      setShowAlert(true);
+    } else if (editRequest.required_date === "") {
+      setMessageAlert("Please enter required Date");
+      setStatusAlert("error");
+      setShowAlert(true);
+    }else if (bloodgroup === "") {
+      setMessageAlert("Please Select blood Group");
+      setStatusAlert("error");
+      setShowAlert(true);
+    } else {
+      try {
+        const res = await fetch(
+          `http://127.0.0.1:5000/api/edit-request/${editRequest.id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              unit : editRequest.unit,
+              date : editRequest.required_dat ,
+              blood_group: bloodgroup,
+              status : editRequest.status
               
-    //         }),
-    //       }
-    //     );
-    //     console.log(editUser.firstname,"first  ", editUser.last_name, "last  ", userRole, "Role", bloodgroup, "blood");
-    //     data();
-    //     const result = await res.json();
-    //     console.log(result);
-    //     setMessageAlert("User updated successfully");
-    //     setStatusAlert("success");
-    //     setShowAlert(true);
-    //     setModalShow(false);
-    //     setShowAlert(false);
-    //     setUserRole("");
-    //   } catch (e) {
-    //     console.log("error", e);
-    //   }
-    // }
+            }),
+          }
+        );
+        // console.log(editUser.firstname,"first  ", editUser.last_name, "last  ", userRole, "Role", bloodgroup, "blood");
+        data();
+        const result = await res.json();
+        console.log(result);
+        openNotification('top','SUCCESS', 'Request Updated Successfully')
+        setMessageAlert("User updated successfully");
+        setStatusAlert("success");
+        setShowAlert(true);
+        setModalShow(false);
+        setShowAlert(false);
+        // setUserRole("");
+      } catch (e) {
+        console.log("error", e);
+      }
+    }
   };
 
   const handleInput = (e) => {
@@ -148,37 +161,34 @@ function RequestsTable() {
     setEditRequest(copyEditRequest);
   };
   
-//   const ShowDeleteModal = (id) => {
-//     setShowAlert(false);
-//     setDeleteModalShow(true);
-//     setDeleteUserId(id);
-//   };
-//   useEffect(()=>{
-//     console.log(editListingId,'sjhdvjksdvhkjh');
-//   },[editListingId])
+  const ShowDeleteModal = (id) => {
+    setShowAlert(false);
+    setDeleteModalShow(true);
+    setDeleteUserId(id);
+  };
 
-//   const deleteListing = async () => {
-//     try {
-//       const res = await fetch(
-//         `https://test-wrangler.listing.workers.dev/api/delete-listing/${deleteUserId}`,
-//         {
-//           method: "DELETE",
-//         }
-//       );
-//       const result = await res.json();
-//     } catch (e) {
-//       console.log(e);
-//     }
-//     CardsData();
-//     data();
-//   };
+  const deleteListing = async (e) => {
+    e.preventDefault();
+    setDeleteModalShow(false)
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/api/delete-request/${deleteUserId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const result = await res.json();
+    } catch (e) {
+      console.log(e);
+    }
+    deleteNotification('top','DELETE User', 'User Deleted Successfully')
+    CardsData();
+    data();
+  };
 
   const count = allRequest.count;
   const limit = 10;
-//   const filterdData = alllisting.results?.filter((val) =>
-//     val?.first_name?.toLowerCase()?.includes(query?.toLowerCase())
-//   );
-//   const tableData = filterdData ?? alllisting;
+
 
   const handlePageClick = (data) => {
     if (!filterState) {
@@ -222,6 +232,7 @@ function RequestsTable() {
     setShowDeleteAlert(true);
     setDeleteMessageAlert(result.msg);
     setDeleteStatusAlert(result.status);
+    deleteNotification('top','DELETE Requests', 'Requests Deleted Successfully')
     data();
     CardsData();
     setisChecked([]);
@@ -359,9 +370,9 @@ function RequestsTable() {
                             width="24"
                           />
                           <img
-                            // onClick={() => {
-                            //   return ShowDeleteModal(listing.listing_id);
-                            // }}
+                            onClick={() => {
+                              return ShowDeleteModal(request.id);
+                            }}
                             style={{ cursor: "pointer" }}
                             src={trash}
                             alt="..."
@@ -409,12 +420,14 @@ function RequestsTable() {
                   <div className="mb-3">
                     <Label className="edit-input-label">First Name</Label>
                     <input
+                      style={{background:'#e1d6d6'}}
                       type="text"
                       name="first_name"
                       onChange={handleInput}
                       value={editRequest.first_name}
                       className="edit-form-control"
                       placeholder="First Name"
+                      disabled
                     />
                   </div>
                 </div>
@@ -422,12 +435,14 @@ function RequestsTable() {
                   <div className="mb-3">
                     <Label className="edit-input-label">Last Name</Label>
                     <input
+                      style={{background:'#e1d6d6'}}
                       type="text"
                       name="last_name"
                       onChange={handleInput}
                       value={editRequest.last_name}
                       className="edit-form-control"
                       placeholder="Last Name"
+                      disabled
                     />
                   </div>
                 </div>
@@ -456,7 +471,7 @@ function RequestsTable() {
                     <Label className="edit-input-label">Req. Date</Label>
                     <input
                       type="date"
-                      name="date"
+                      name="required_date"
                       onChange={handleInput}
                       value={editRequest.required_date}
                       className="edit-form-control"
@@ -469,16 +484,14 @@ function RequestsTable() {
                 <div className="col-md-6">
                   <div className="mb-3">
                     <Label className="edit-input-label">Request Status</Label>
-                    <select
+                    <input
+                  style={{background:'#e1d6d6'}}
                   className="edit-form-control padding-rigth-15"
-                  value={requestStatus}
-                  onChange={(e) => setRequestStatus(e.target.value)}
-                >
-                  <option>Select</option>
-                  <option value={"pending"}>Pending</option>
-                  <option value={"approve"}>Approve</option>
-                  <option value={"reject"}>Reject</option>
-                </select>
+                  value={editRequest.status}
+                  
+                  disabled
+                />
+            
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -486,117 +499,25 @@ function RequestsTable() {
                     <Label className="edit-input-label">Units</Label>
                     <input
                       type="number"
-                      name="units"
+                      name="unit"
                       onChange={handleInput}
                       value={editRequest.unit}
                       className="edit-form-control"
-                      placeholder="Phone No"
+                      placeholder="Units"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* <div className="row">
-                <div className="col-md-6">
-                  <div className="mb-3">
-                    <Label className="edit-input-label">Blood Group</Label>
-                    <select
-                  className="edit-form-control padding-rigth-15"
-                  value={bloodgroup}
-                  onChange={(e) => setBloodGroup(e.target.value)}
-                >
-                  <option>Select</option>
-                  <option value={"ab+"}>AB+</option>
-                  <option value={"a-"}>A-</option>
-                  <option value={"ab-"}>AB-</option>
-                  <option value={"b+"}>B+</option>
-                  <option value={"a+"}>A+</option>
-                </select>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="mb-3">
-                    <Label className="edit-input-label">Gender</Label>
-                    <input
-                      type="text"
-                      name="gender"
-                      onChange={handleInput}
-                      value={editUser.gender}
-                      className="edit-form-control"
-                      placeholder="Gender"
-                    />
-                  </div>
-                </div>
-              </div> */}
+             
 
-              {/* <div className="row">
-                <div className="col-md-6">
-                  <div className="mb-3">
-                    <Label className="edit-input-label">
-                      Email*{" "}
-                      <span className="edit-from-control-msg">
-                        (Email is not editable)
-                      </span>
-                    </Label>
-                    <input
-                      type="email"
-                      name="email"
-                      onChange={handleInput}
-                      value={editUser.email}
-                      className="edit-form-control"
-                      placeholder="Emaill"
-                      disabled
-                    />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="mb-3">
-                    <Label className="edit-input-label">Password</Label>
-                    <input
-                      type="password"
-                      name="password"
-                      onChange={handleInput}
-                      value={editUser.password}
-                      className="edit-form-control"
-                      placeholder="Password"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mb-3">
-                <Label className="edit-input-label">Role</Label>
-                <select
-                  className="edit-form-control padding-rigth-15"
-                  value={userRole}
-                  onChange={(e) => setUserRole(e.target.value)}
-                >
-                  <option>Select</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Patient</option>
-                  <option value={3}>Donor</option>
-                </select>
-              </div> */}
-              {/* {
-                userRole == '3' ? 
-                <div className="mb-3">
-                <Label className="edit-input-label">Prefrence</Label>
-                <select
-                  className="edit-form-control padding-rigth-15"
-                  value={userStatus}
-                  onChange={(e) => setPrefrence(e.target.value)}
-                >
-                  <option>Select</option>
-                  <option value={"adopt_a_child"}>Adopt a Child</option>
-                  <option value={"one_time"}>One Time</option>
-                </select>
-              </div> : ""
-
-              } */}
-              {/* {showAlert ? (
+            
+         
+              {showAlert ? (
                 <Alert message={showMessage} type={showStatus} />
               ) : (
                 <div></div>
-              )} */}
+              )}
               <div className="row">
                 <div className="col-md-6">
                   <button
@@ -619,7 +540,7 @@ function RequestsTable() {
 
 
         {/* deleting list Modal */}
-        {/* <Modal
+        <Modal
           className="edit-modal"
           show={deleteModalShow}
           size="md"
@@ -666,7 +587,7 @@ function RequestsTable() {
 
             {showAlert ? <Alert message={showMessage} type={showStatus} /> : ""}
           </Modal.Body>
-        </Modal> */}
+        </Modal>
       </div>
       <Pagination
         count={count}

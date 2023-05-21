@@ -6,7 +6,7 @@ import DashboardOverViewContent from "./DashBoardOverViewContent";
 import UserTable from "./UserTable";
 import Modal from "react-bootstrap/Modal";
 import pen from "../images/pen.png";
-import { Alert } from "antd";
+import { Alert, notification } from "antd";
 import { Label } from "reactstrap";
 
 export const Globals = createContext();
@@ -36,12 +36,22 @@ export default function DashboardUserBody() {
     phone_no: "",
     address: ""
   });
+  const [api, contextHolder] = notification.useNotification();
+
 
   useEffect(() => {
     CardsData();
     data();
     setInitialpage(0);
   }, []);
+
+  const openNotification = (placement, message,description) => {
+    api.success({
+      message,
+      description,      
+      placement,
+    });
+  };
   const CardsData = async () => {
     setLoader(true);
     try {
@@ -181,6 +191,7 @@ export default function DashboardUserBody() {
           } else {
             setMessageAlert(respons.msg);
             setStatusAlert("success");
+            openNotification('top','SUCCESS', 'User Created Successfully')
             setShowAlert(true);
             setModalShow(false);
             setUserInput({
@@ -221,9 +232,13 @@ export default function DashboardUserBody() {
         allUsers: allUsers,
         setFilterState: setFilterState,
         filterState: filterState,
+        openNotification: openNotification,
+        api:api,
+        contextHolder:contextHolder
       }}
     >
       <>
+      {contextHolder}
         <div class="dash-body">
           <DashboardHeader title={"Users"} />
           <div className="dash-user-content">
