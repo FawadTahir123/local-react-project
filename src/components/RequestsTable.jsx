@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import { display } from "@mui/system";
 
 function RequestsTable() {
-  
   const [showAlert, setShowAlert] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const {
@@ -32,7 +31,7 @@ function RequestsTable() {
     setFilterState,
     api,
     contextHolder,
-    openNotification
+    openNotification,
     // services,
   } = useContext(RequestsGlobals);
   // const {location, setLocation, selectedLocation, setSelectedLocation, editListingId, setEditListingId, setServices} = useContext(MapGlobals);
@@ -48,12 +47,10 @@ function RequestsTable() {
   const childCompRef = useRef();
   const [editRequest, setEditRequest] = React.useState({});
   const [modalShow, setModalShow] = React.useState(false);
-  const [requestStatus, setRequestStatus] = React.useState("")
-  const [bloodgroup, setBloodGroup] = useState("")
+  const [requestStatus, setRequestStatus] = React.useState("");
+  const [bloodgroup, setBloodGroup] = useState("");
 
-
-
-  const Navigate= useNavigate()
+  const Navigate = useNavigate();
 
   const deleteNotification = (placement, message, description) => {
     api.error({
@@ -71,9 +68,8 @@ function RequestsTable() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-                status: 'approve'
-                      
-                    }),
+            status: "approve",
+          }),
         }
       );
       data();
@@ -82,8 +78,6 @@ function RequestsTable() {
       // setEditRequest(result.data[0]);
       // setRequestStatus(result.data[0].status)
       // setBloodGroup(result.data[0].blood_group)
-
-
     } catch (e) {
       console.log("error", e);
     }
@@ -101,14 +95,13 @@ function RequestsTable() {
       data();
       const result = await res.json();
       setEditRequest(result.data[0]);
-      setRequestStatus(result.data[0].status)
-      setBloodGroup(result.data[0].blood_group)
+      setRequestStatus(result.data[0].status);
+      setBloodGroup(result.data[0].blood_group);
     } catch (e) {
       console.log("error", e);
     }
     setModalShow(true);
   };
-
 
   const UpdateRequest = async (e) => {
     e.preventDefault();
@@ -120,7 +113,7 @@ function RequestsTable() {
       setMessageAlert("Please enter required Date");
       setStatusAlert("error");
       setShowAlert(true);
-    }else if (bloodgroup === "") {
+    } else if (bloodgroup === "") {
       setMessageAlert("Please Select blood Group");
       setStatusAlert("error");
       setShowAlert(true);
@@ -132,11 +125,10 @@ function RequestsTable() {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              unit : editRequest.unit,
-              date : editRequest.required_dat ,
+              unit: editRequest.unit,
+              date: editRequest.required_dat,
               blood_group: bloodgroup,
-              status : editRequest.status
-              
+              status: editRequest.status,
             }),
           }
         );
@@ -144,7 +136,7 @@ function RequestsTable() {
         data();
         const result = await res.json();
         console.log(result);
-        openNotification('top','SUCCESS', 'Request Updated Successfully')
+        openNotification("top", "SUCCESS", "Request Updated Successfully");
         setMessageAlert("User updated successfully");
         setStatusAlert("success");
         setShowAlert(true);
@@ -163,7 +155,7 @@ function RequestsTable() {
     copyEditRequest = { ...copyEditRequest, [e.target.name]: e.target.value };
     setEditRequest(copyEditRequest);
   };
-  
+
   const ShowDeleteModal = (id) => {
     setShowAlert(false);
     setDeleteModalShow(true);
@@ -172,7 +164,7 @@ function RequestsTable() {
 
   const deleteListing = async (e) => {
     e.preventDefault();
-    setDeleteModalShow(false)
+    setDeleteModalShow(false);
     try {
       const res = await fetch(
         `http://127.0.0.1:5000/api/delete-request/${deleteUserId}`,
@@ -184,14 +176,13 @@ function RequestsTable() {
     } catch (e) {
       console.log(e);
     }
-    deleteNotification('top','DELETE User', 'User Deleted Successfully')
+    deleteNotification("top", "DELETE User", "User Deleted Successfully");
     CardsData();
     data();
   };
 
   const count = allRequest.count;
   const limit = 10;
-
 
   const handlePageClick = (data) => {
     if (!filterState) {
@@ -235,7 +226,11 @@ function RequestsTable() {
     setShowDeleteAlert(true);
     setDeleteMessageAlert(result.msg);
     setDeleteStatusAlert(result.status);
-    deleteNotification('top','DELETE Requests', 'Requests Deleted Successfully')
+    deleteNotification(
+      "top",
+      "DELETE Requests",
+      "Requests Deleted Successfully"
+    );
     data();
     CardsData();
     setisChecked([]);
@@ -247,7 +242,7 @@ function RequestsTable() {
   // useEffect(() =>{
   //   console.log("services?.results", services)
   // },[services])
-// console.log(services,'aserveices')
+  // console.log(services,'aserveices')
   return (
     <>
       <div className="d-flex del-search">
@@ -287,30 +282,13 @@ function RequestsTable() {
           <thead>
             <tr>
               <th>#</th>
-              <th>
-                Patient Name
-              </th>
-              <th>                
-                Req. Blood Group 
-              </th>
-              <th>
-                Req. Date
-              </th>
-              <th>
-                Request Status
-              
-              </th>
-              <th>
-               Units
-
-              </th>
-              <th>
-               Remaining Units
-              </th>
-              <th>
-                Action
-              </th>
-              
+              <th>Patient Name</th>
+              <th>Req. Blood Group</th>
+              <th>Req. Date</th>
+              <th>Request Status</th>
+              <th>Units</th>
+              <th>Remaining Units</th>
+              <th>Action</th>
             </tr>
           </thead>
           {showTableLoader === false ? (
@@ -334,7 +312,9 @@ function RequestsTable() {
                           value={request.id}
                           classNameName="hidden-user-id"
                         />
-                        <span>{request.first_name} {request.last_name}</span>
+                        <span>
+                          {request.first_name} {request.last_name}
+                        </span>
                       </div>
                     </td>
                     <td>
@@ -400,10 +380,9 @@ function RequestsTable() {
           )}
         </table>
 
+        {/* {Edit Modal} */}
 
-{/* {Edit Modal} */}
-
-<Modal
+        <Modal
           className="edit-modal"
           show={modalShow}
           size="md"
@@ -413,7 +392,7 @@ function RequestsTable() {
           <Modal.Header className="d-flex justify-content-center color-orange font-family-poppins">
             <img style={{ cursor: "pointer" }} src={pen} alt="..." width="24" />
             <Modal.Title id="contained-modal-title-vcenter">
-              &nbsp;Edit Patient Request 
+              &nbsp;Edit Patient Request
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -423,7 +402,7 @@ function RequestsTable() {
                   <div className="mb-3">
                     <Label className="edit-input-label">First Name</Label>
                     <input
-                      style={{background:'#e1d6d6'}}
+                      style={{ background: "#e1d6d6" }}
                       type="text"
                       name="first_name"
                       onChange={handleInput}
@@ -438,7 +417,7 @@ function RequestsTable() {
                   <div className="mb-3">
                     <Label className="edit-input-label">Last Name</Label>
                     <input
-                      style={{background:'#e1d6d6'}}
+                      style={{ background: "#e1d6d6" }}
                       type="text"
                       name="last_name"
                       onChange={handleInput}
@@ -454,19 +433,19 @@ function RequestsTable() {
               <div className="row">
                 <div className="col-md-6">
                   <div className="mb-3">
-                  <Label className="edit-input-label">Blood Group</Label>
+                    <Label className="edit-input-label">Blood Group</Label>
                     <select
-                  className="edit-form-control padding-rigth-15"
-                  value={bloodgroup}
-                  onChange={(e) => setBloodGroup(e.target.value)}
-                >
-                  <option>Select</option>
-                  <option value={"ab+"}>AB+</option>
-                  <option value={"a-"}>A-</option>
-                  <option value={"ab-"}>AB-</option>
-                  <option value={"b+"}>B+</option>
-                  <option value={"a+"}>A+</option>
-                </select>
+                      className="edit-form-control padding-rigth-15"
+                      value={bloodgroup}
+                      onChange={(e) => setBloodGroup(e.target.value)}
+                    >
+                      <option>Select</option>
+                      <option value={"ab+"}>AB+</option>
+                      <option value={"a-"}>A-</option>
+                      <option value={"ab-"}>AB-</option>
+                      <option value={"b+"}>B+</option>
+                      <option value={"a+"}>A+</option>
+                    </select>
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -488,13 +467,11 @@ function RequestsTable() {
                   <div className="mb-3">
                     <Label className="edit-input-label">Request Status</Label>
                     <input
-                  style={{background:'#e1d6d6'}}
-                  className="edit-form-control padding-rigth-15"
-                  value={editRequest.status}
-                  
-                  disabled
-                />
-            
+                      style={{ background: "#e1d6d6" }}
+                      className="edit-form-control padding-rigth-15"
+                      value={editRequest.status}
+                      disabled
+                    />
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -511,10 +488,6 @@ function RequestsTable() {
                   </div>
                 </div>
               </div>
-
-
-
-            
 
               {showAlert ? (
                 <Alert message={showMessage} type={showStatus} />
@@ -541,7 +514,6 @@ function RequestsTable() {
           </Modal.Body>
         </Modal>
 
-
         {/* deleting list Modal */}
         <Modal
           className="edit-modal"
@@ -558,13 +530,13 @@ function RequestsTable() {
               width="24"
             />
             <Modal.Title id="contained-modal-title-vcenter">
-              &nbsp; Delete User
+              &nbsp; Delete Request
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div>
               <h4 className="delete-user-text">
-                Are you sure you want to delete this List?
+                Are you sure you want to delete this Request?
               </h4>
             </div>
             <form className="login-form " onSubmit={deleteListing}>
