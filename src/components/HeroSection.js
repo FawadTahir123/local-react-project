@@ -13,21 +13,7 @@ function HeroSection() {
 		event.preventDefault();
 	};
   return (
-    <div className="hero-container">
-      <div className="alert">
-       
-        {
-      account_status === "HOLD" ? 
-      <Alert
-      style={{marginTop:'-295px', width:'100%' , marginRight:'1400px'}}
-      message="Your Account is on Hold. Kindly go to our screening center to complete your verification to become eligible for blood donation. You can't set your availability when your account is on Hold."
-      banner
-      type="error"
-      closable
-    />: ""
-    }
-    </div>
-        
+    <div className="hero-container">  
         <>
           <p>
             "Your single blood donation can be the difference between life
@@ -52,12 +38,12 @@ function HeroSection() {
           <div className="d-flex">
             <div className="hero-btns">
               <Link to="/availability" className="btns">
-                Set Your Availability
+                Search Patient
               </Link>
             </div>
             <div className="hero-btns">
               <Link to="/check-event" className="btns">
-                Check Events
+                Your Donations
               </Link> 
             </div>
             </div>
@@ -67,12 +53,12 @@ function HeroSection() {
           <div className="d-flex">
             <div className="hero-btns">
               <Link onClick={ClickHandler} to="/availability" className="btns">
-                Set Your Availability
+                Search Patient
               </Link>
             </div>
         <div className="hero-btns">
               <Link to="/check-event" className="btns">
-                Check Events
+                Your Donations
               </Link> 
             </div>
             </div>

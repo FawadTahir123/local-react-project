@@ -79,7 +79,10 @@ function RequestsTable() {
       data();
       const result = await res.json();
       console.log(result);
-   
+      // setEditRequest(result.data[0]);
+      // setRequestStatus(result.data[0].status)
+      // setBloodGroup(result.data[0].blood_group)
+
 
     } catch (e) {
       console.log("error", e);
@@ -509,10 +512,10 @@ function RequestsTable() {
                 </div>
               </div>
 
-             
+
 
             
-         
+
               {showAlert ? (
                 <Alert message={showMessage} type={showStatus} />
               ) : (

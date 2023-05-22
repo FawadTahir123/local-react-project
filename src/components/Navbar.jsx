@@ -1,12 +1,14 @@
 import React from 'react'
 import LOGO from '../images/dashlogo.png'
 import {Link, useNavigate } from 'react-router-dom';
+import { Alert } from 'antd'
 // import user from "../../imgs/user.png";
 
 function Header() {     
     const navigate  = useNavigate()
     const currentUserLoginId = localStorage.getItem("id");
     const username = "Welcome, " + localStorage.getItem('firstname') + " " + localStorage.getItem("lastname")
+    const account_status = localStorage.getItem("account_status")
 
     const clearToken = () => {
         localStorage.clear()
@@ -47,10 +49,20 @@ function Header() {
                      <button className="btn-nav-addlisting mt-2" onClick={clearToken}>LOGOUT</button>  
                 </div>
                     }
+                
                         
                     </div>
                 </nav>
             </div>
+            {
+      account_status === "HOLD" ? 
+      <Alert
+      message="Your Account is on Hold. Kindly go to our screening center to complete your verification to become eligible for blood donation. You can't set your availability when your account is on Hold."
+      banner
+      type="error"
+      closable
+    />: ""
+    }
         </header>
        
     </>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Home";
-import { Switch, Card, Button, Drawer, Space , notification} from "antd";
+import { Switch, Card, Button, Drawer, Space , notification, Alert} from "antd";
 import { Link } from "react-router-dom";
 import Header from "../components/Navbar";
 
@@ -24,28 +24,23 @@ function AvailabiltyCheck() {
     });
   };
 
-  // const getAvailability = async () => {
-  //   try {
-  //     const res = await fetch(
-  //       `http://127.0.0.1:5000/api/get-user-availability/${userID}`,
-  //       {
-  //         method: "GET",
-  //       }
-  //     );
-  //     const result = await res.json();
-  //     if (result.data[0].availability === "Available") {
-  //       setChecked(true);
-  //       setOpen(true)
-  //       // checkForevents()
-
-  //     } else {
-  //       setChecked(false);
-  //       // checkForevents()
-  //     }
-  //   } catch (e) {
-  //     console.log("error", e);
-  //   }
-  // };
+  const getAvailability = async () => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/api/get-user-availability/${userID}`,
+        {
+          method: "GET",
+        }
+      );
+      const result = await res.json();
+      console.log(result);
+      if(result.status === 2){
+        setDisable(true)
+      }
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
 
   const getBloodGroup = async () => {
     try {
@@ -165,6 +160,7 @@ function AvailabiltyCheck() {
   };
   useEffect(() => {
     getBloodGroup();
+    getAvailability();
   }, []);
 
   return (
@@ -175,7 +171,7 @@ function AvailabiltyCheck() {
       <div className="container" style={divStyle}>
         <div style={{ textAlign: "center" }}>
           <h1 style={{ marginTop: "20px", color: "#fff", fontWeight: "bold" }}>
-            let us know when you are available
+            Search a Deserving Patient whom you want to Donate
           </h1>
         </div>
         <div style={buttonStyle}>
@@ -184,13 +180,26 @@ function AvailabiltyCheck() {
           </Button>
         </div>
         <div style={divStyleforSwitch} className="d-flex">
-          <p style={{ fontWeight: "bold", color: "#fff" }}>Set Availability</p>
+          <p style={{ fontWeight: "bold", color: "#fff" }}>Search</p>
           {!disable ? (
             <Switch checked={ischecked} onChange={onChange} />
-          ) : (
-            <Switch checked={false} disabled={true} onChange={onChange} />
+          ) : (  
+            <>
+            <Switch checked={false} disabled={true} onChange={onChange} />        
+            </>    
           )}
+
         </div>
+        {
+          disable ?  <div className="d-flex justify-content-center m-2">
+          <Alert
+          message="You can't search for new patients, as your are in an event"
+          banner
+          type="error"
+          closable
+        />
+            </div> :""
+        }
       </div>
       <Drawer
         title="Available Patients"

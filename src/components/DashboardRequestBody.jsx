@@ -159,7 +159,7 @@ function DashboardRequestsBody() {
             }),
           }
         );
-        openNotification('top', 'SUCCESS', 'User add Successfully')
+        openNotification('top', 'SUCCESS', 'Request Added  Successfully')
         const result = await res.json();
         CardsData();
         data();
