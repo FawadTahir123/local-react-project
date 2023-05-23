@@ -11,8 +11,6 @@ import Pagination from "./Paginaton";
 import Button from "@mui/material/Button";
 import Search from "./GuiFilter";
 import { CircularProgress } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { display } from "@mui/system";
 
 function RequestsTable() {
   const [showAlert, setShowAlert] = useState(false);
@@ -30,11 +28,9 @@ function RequestsTable() {
     filterState,
     setFilterState,
     api,
-    contextHolder,
     openNotification,
-    // services,
+   
   } = useContext(RequestsGlobals);
-  // const {location, setLocation, selectedLocation, setSelectedLocation, editListingId, setEditListingId, setServices} = useContext(MapGlobals);
   const [deleteUserId, setDeleteUserId] = useState("");
   const [items, setItems] = useState([]);
   const [query, setQuery] = React.useState("");
@@ -50,38 +46,12 @@ function RequestsTable() {
   const [requestStatus, setRequestStatus] = React.useState("");
   const [bloodgroup, setBloodGroup] = useState("");
 
-  const Navigate = useNavigate();
-
   const deleteNotification = (placement, message, description) => {
     api.error({
       message,
       description,
       placement,
     });
-  };
-
-  const changeRequestStatus = async (id) => {
-    try {
-      const res = await fetch(
-        `http://127.0.0.1:5000/api/approve-request/${id}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            status: "approve",
-          }),
-        }
-      );
-      data();
-      const result = await res.json();
-      console.log(result);
-      // setEditRequest(result.data[0]);
-      // setRequestStatus(result.data[0].status)
-      // setBloodGroup(result.data[0].blood_group)
-    } catch (e) {
-      console.log("error", e);
-    }
-    // setModalShow(true);
   };
 
   const getEditData = async (request) => {
@@ -132,7 +102,6 @@ function RequestsTable() {
             }),
           }
         );
-        // console.log(editUser.firstname,"first  ", editUser.last_name, "last  ", userRole, "Role", bloodgroup, "blood");
         data();
         const result = await res.json();
         console.log(result);
@@ -142,7 +111,6 @@ function RequestsTable() {
         setShowAlert(true);
         setModalShow(false);
         setShowAlert(false);
-        // setUserRole("");
       } catch (e) {
         console.log("error", e);
       }
@@ -195,7 +163,7 @@ function RequestsTable() {
       let currentPage = data.selected + 1;
       setInitialpage(data.selected);
       const commentsFormServer = childCompRef.current.searchByPage(
-        `http://127.0.0.1:5000/api/search-listing?page=${currentPage}&limit=10`
+        `http://127.0.0.1:5000/api/search-request?page=${currentPage}&limit=10`
       );
       setItems(commentsFormServer);
       setisChecked([]);
@@ -239,10 +207,6 @@ function RequestsTable() {
     setShowDeleteAlert(false);
   }, 5000);
 
-  // useEffect(() =>{
-  //   console.log("services?.results", services)
-  // },[services])
-  // console.log(services,'aserveices')
   return (
     <>
       <div className="d-flex del-search">
@@ -294,7 +258,6 @@ function RequestsTable() {
           {showTableLoader === false ? (
             <tbody>
               {allRequest.data?.map((request) => {
-                // console.log(listing,"listing",listing?.isChecked,"isChecked");
                 return (
                   <tr key={request.id}>
                     <td>

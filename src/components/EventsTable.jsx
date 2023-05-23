@@ -7,7 +7,7 @@ import Modal from "react-bootstrap/Modal";
 import { Label } from "reactstrap";
 import { Alert } from "antd";
 import { EventsGlobals } from "./DashboardEventsBody";
-// import Pagination from "./Paginaton";
+import Pagination from "./Paginaton";
 import Button from "@mui/material/Button";
 import Search from "./GuiFilter";
 
@@ -23,7 +23,6 @@ function EventsTable() {
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const {
     data,
-    alllisting,
     CardsData,
     data1,
     initialpage,
@@ -36,20 +35,21 @@ function EventsTable() {
     filterState,
     setFilterState,
     services,
+    totalResults
   } = useContext(EventsGlobals);
-//   const {location, setLocation, selectedLocation, setSelectedLocation, editListingId, setEditListingId, setServices} = useContext(MapGlobals);
-//   const [deleteUserId, setDeleteUserId] = useState("");
-//   const [items, setItems] = useState([]);
-//   const [query, setQuery] = React.useState("");
+  // const {location, setLocation, selectedLocation, setSelectedLocation, editListingId, setEditListingId, setServices} = useContext(MapGlobals);
+  const [deleteUserId, setDeleteUserId] = useState("");
+  const [items, setItems] = useState([]);
+  const [query, setQuery] = React.useState("");
   const [isChecked, setisChecked] = useState([]);
-//   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-//   const [showDeleteStatus, setDeleteStatusAlert] = useState(false);
-//   const [showDeleteMessage, setDeleteMessageAlert] = useState("");
-//   const [showStatus, setStatusAlert] = useState("");
-//   const [showMessage, setMessageAlert] = useState("");
-//   const [sorting, setsorting] = useState(false)
-//   const childCompRef = useRef();
-//   const Navigate= useNavigate()
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [showDeleteStatus, setDeleteStatusAlert] = useState(false);
+  const [showDeleteMessage, setDeleteMessageAlert] = useState("");
+  const [showStatus, setStatusAlert] = useState("");
+  const [showMessage, setMessageAlert] = useState("");
+  const [sorting, setsorting] = useState(false)
+  const childCompRef = useRef();
+  const Navigate= useNavigate()
 
   
 //   const ShowDeleteModal = (id) => {
@@ -77,30 +77,26 @@ function EventsTable() {
 //     data();
 //   };
 
-//   const count = alllisting.count;
-//   const limit = 10;
-//   const filterdData = alllisting.results?.filter((val) =>
-//     val?.first_name?.toLowerCase()?.includes(query?.toLowerCase())
-//   );
-//   const tableData = filterdData ?? alllisting;
+const count = totalResults;
+const limit = 10;
 
-//   const handlePageClick = (data) => {
-//     if (!filterState) {
-//       let currentPage = data.selected + 1;
-//       const commentsFormServer = data1(currentPage, limit);
-//       setInitialpage(data.selected);
-//       setItems(commentsFormServer);
-//       setisChecked([]);
-//     } else {
-//       let currentPage = data.selected + 1;
-//       setInitialpage(data.selected);
-//       const commentsFormServer = childCompRef.current.searchByPage(
-//         `https://test-wrangler.listing.workers.dev/api/search-listing?page=${currentPage}&limit=10`
-//       );
-//       setItems(commentsFormServer);
-//       setisChecked([]);
-//     }
-//   };
+  const handlePageClick = (data) => {
+    if (!filterState) {
+      let currentPage = data.selected + 1;
+      const commentsFormServer = data1(currentPage, limit);
+      setInitialpage(data.selected);
+      setItems(commentsFormServer);
+      setisChecked([]);
+    } else {
+      let currentPage = data.selected + 1;
+      setInitialpage(data.selected);
+      const commentsFormServer = childCompRef.current.searchByPage(
+        `https://test-wrangler.listing.workers.dev/api/search-listing?page=${currentPage}&limit=10`
+      );
+      setItems(commentsFormServer);
+      setisChecked([]);
+    }
+  };
 
   const handelCheckbox = (e) => {
     const { value, checked } = e.target;
@@ -339,12 +335,12 @@ function EventsTable() {
           </Modal.Body>
         </Modal> */}
       </div>
-      {/* <Pagination
+      <Pagination
         count={count}
         limit={limit}
         handlePageClick={handlePageClick}
         initialpage={initialpage}
-      /> */}
+      />
     </>
   );
 }

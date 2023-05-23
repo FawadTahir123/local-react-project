@@ -81,7 +81,6 @@ function DashboardRequestsBody() {
         }
       );
       const result = await res.json();
-      console.log(result);
       setTableloader(false);
       setAllRequest(result);
       // setServices(result.services);
@@ -174,18 +173,11 @@ function DashboardRequestsBody() {
     setRequest({ ...requestData, [e.target.name]: e.target.value });
   };
 
-  // const handleChange = (e) => {
-  //   setSelectedUser(e.target.value);
-  // };
-console.log(patientsData);
-  // useEffect(() => {
-  //   console.log("here useEffect", selectedUser)
-  // },[selectedUser])
   return (
     <RequestsGlobals.Provider
       value={{
         data: data,
-        // data1: data1,
+        data1: data1,
         CardsData: CardsData,
         setInitialpage: setInitialpage,
         setAllRequest: setAllRequest,
@@ -203,7 +195,6 @@ console.log(patientsData);
         showTableLoader: showTableLoader,
         setFilterState: setFilterState,
         filterState: filterState,
-        // services: services,
       }}
     >
       {contextHolder}

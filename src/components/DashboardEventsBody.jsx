@@ -14,15 +14,15 @@ import EventsTable from "./EventsTable";
 export const EventsGlobals = createContext();
 function DashboardEventsBody() {
   // const navigate = Navigate();
-  // const [modalShow, setModalShow] = useState(false);
-  // const [showAlert, setShowAlert] = useState(false);
-  // const [users, setUsers] = useState([]);
-  // const [showStatus, setStatusAlert] = useState("");
-  // const [showMessage, setMessageAlert] = useState("");
-  // const [categories, setCategories] = useState([]);
-  // const [selectedCategory, setSelectedCategory] = useState("");
-  // const [selectedUser, setSelectedUser] = useState("");
-  // const [flag, setFlag] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [showStatus, setStatusAlert] = useState("");
+  const [showMessage, setMessageAlert] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedUser, setSelectedUser] = useState("");
+  const [flag, setFlag] = useState(false);
   const [allPatientEvents, setAllPatientEvents] = useState([]);
   const [allDonorEvents, setAllDonorEvents] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -34,32 +34,12 @@ function DashboardEventsBody() {
   const [showTableLoader, setTableloader] = useState(false);
   const [filterState, setFilterState] = useState(false);
   const [services, setServices] = useState([]);
-
-  const [listing, setListing] = useState({
-    user_id: "",
-    location: "",
-    category_id: "",
-    menu_type: "",
-    services: "",
-    rating: "",
-    rating_count: "",
-    image_link: "",
-    video_link: "",
-    url: "",
-    start_time: "",
-    end_time: "",
-    max_price: "",
-    min_price: "",
-    phn_number: "",
-    description: "",
-    name: "",
-    address: "",
-  });
+  const [totalResults, setTotalResults] = useState(null)
 
   useEffect(() => {
     data();
     CardsData();
-    // setInitialpage(0);
+    setInitialpage(0);
   }, []);
 
   const CardsData = async () => {
@@ -84,7 +64,7 @@ function DashboardEventsBody() {
     setTableloader(true);
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/api/get-all-events`,
+        `http://127.0.0.1:5000/api/get-all-events?page=1&limit=10`,
         {
           method: "GET",
         }
@@ -92,8 +72,8 @@ function DashboardEventsBody() {
       const result = await res.json();
       setAllPatientEvents(result.data[0]);
       setAllDonorEvents(result.data[1]);
+      setTotalResults(result.data[2][0].count)
       setTableloader(false);
-      // setFlag(true);
     } catch (err) {
       console.log(err.message);
     }
@@ -103,16 +83,16 @@ function DashboardEventsBody() {
     setTableloader(true);
     try {
       const res = await fetch(
-        `https://test-wrangler.listing.workers.dev/api/get-all-listing?page=${page}&limit=${limit}`,
+        `http://127.0.0.1:5000/api/get-all-events?page=${page}&limit=${limit}`,
         {
           method: "GET",
         }
       );
       const result = await res.json();
+      setAllPatientEvents(result.data[0]);
+      setAllDonorEvents(result.data[1]);
+      setTotalResults(result.data[2][0].count)
       setTableloader(false);
-      // setAllListing(result);
-      setServices(result.services);
-      // console.log(result.count)
     } catch (err) {
       console.log(err.message);
     }
@@ -268,22 +248,17 @@ function DashboardEventsBody() {
   //   setSelectedUser(e.target.value);
   // };
 
-  // useEffect(() => {
-  //   console.log("here useEffect", selectedUser)
-  // },[selectedUser])
-console.log(allPatientEvents, "all patient");
-console.log(allDonorEvents, "all donor");
  
   return (
     <EventsGlobals.Provider
       value={{
         data: data,
-        // data1: data1,
+        data1: data1,
         CardsData: CardsData,
-        // setInitialpage: setInitialpage,
-        // setAllListing: setAllListing,
-        // // setTableloader: setTableloader,
-        // initialpage: initialpage,
+        setInitialpage: setInitialpage,
+        setTableloader: setTableloader,
+        initialpage: initialpage,
+        totalResults:totalResults,
         allDonorEvents: allDonorEvents,
         allPatientEvents: allPatientEvents,
         Cardsloader: loader,
@@ -292,20 +267,15 @@ console.log(allDonorEvents, "all donor");
         totalRequests: totalRequests,
         totalEvents:totalEvents,
         showTableLoader: showTableLoader,
-        // setFilterState: setFilterState,
-        // filterState: filterState,
+        setFilterState: setFilterState,
+        filterState: filterState,
         // services: services,
       }}
     >
       <div className="dash-body">
         <DashboardHeader title={"Events"} />
         <div className="dash-user-content">
-          <div className="d-flex align-items-center total-over-add">
-            {/* <Link to="/admin/listingForm" className="ms-auto add-user-btn">
-              <img src={add} alt="..." />
-              Add Events
-            </Link> */}
-          </div>
+          
         </div>
 
         <div className="over-tbl-content">
